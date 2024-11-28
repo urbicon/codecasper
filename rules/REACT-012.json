@@ -1,0 +1,114 @@
+{
+    "ruleId": "REACT-012",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "List Rendering",
+    "context": {
+        "scope": "Array Rendering",
+        "applicableFiles": [
+            "*.tsx",
+            "*.jsx"
+        ],
+        "triggers": [
+            "array mapping",
+            "list rendering",
+            "iterable elements"
+        ]
+    },
+    "pattern": {
+        "description": "Every item in an array or iterable being rendered must have a unique and stable key prop",
+        "codePatterns": [
+            "\\.map\\(",
+            "Array\\.from\\(",
+            "Array\\.prototype\\.map",
+            "forEach\\("
+        ],
+        "conditions": {
+            "isArrayRendering": true,
+            "needsKeys": true,
+            "examples": [
+                "Array.map() rendering",
+                "Array.from() with rendering",
+                "Iterable rendering in JSX"
+            ]
+        }
+    },
+    "recommendation": {
+        "action": "add",
+        "description": "Add unique and stable key props to elements rendered from arrays",
+        "codeExamples": {
+            "before": {
+                "example": [
+                    "items.map(item => (",
+                    "  <ListItem>",
+                    "    {item.name}",
+                    "  </ListItem>",
+                    "))"
+                ],
+                "issues": [
+                    "Missing key prop",
+                    "React will warn about missing keys",
+                    "Potential reconciliation issues"
+                ]
+            },
+            "after": {
+                "example": [
+                    "items.map(item => (",
+                    "  <ListItem",
+                    "    key={item.id} // Preferred: Use stable, unique identifier",
+                    "    // key={index} // Anti-pattern: Avoid using array index as key",
+                    "  >",
+                    "    {item.name}",
+                    "  </ListItem>",
+                    "))"
+                ],
+                "benefits": [
+                    "Proper React reconciliation",
+                    "Better performance",
+                    "No warnings",
+                    "Predictable behavior with state"
+                ]
+            }
+        },
+        "principles": [
+            "Always provide key prop when rendering arrays",
+            "Use stable, unique identifiers as keys",
+            "Avoid using array index as keys unless the list is static",
+            "Keys should be unique among siblings only",
+            "Keys should remain stable across re-renders"
+        ]
+    },
+    "relatedRules": [
+        {
+            "ruleId": "REACT-007",
+            "relationship": "complementary",
+            "description": "Clean DOM structure includes proper key usage",
+            "relevance": "Keys are crucial for proper component structure"
+        },
+        {
+            "ruleId": "REACT-011",
+            "relationship": "related",
+            "description": "Key warnings affect code readability",
+            "relevance": "Clean console improves development experience"
+        },
+        {
+            "ruleId": "TEST-001",
+            "relationship": "related",
+            "description": "Warnings should not appear in production",
+            "relevance": "Key warnings indicate code quality issues"
+        },
+        {
+            "ruleId": "REACT-004",
+            "relationship": "dependent",
+            "description": "Component declaration affects key handling",
+            "relevance": "Proper component structure enables correct key usage"
+        }
+    ],
+    "severity": "high",
+    "metadata": {
+        "created": "2024-03-28",
+        "lastModified": "2024-03-28",
+        "implementationStatus": "proposed"
+    },
+    "rationale": "React requires unique keys for elements in arrays to efficiently update the DOM and maintain component state. Missing or improper keys can lead to performance issues, unexpected behavior with state, and debugging difficulties. Keys should be stable and unique to ensure consistent rendering and proper reconciliation."
+}
