@@ -1,0 +1,63 @@
+{
+  "ruleId": "TS-001",
+  "version": "1.0",
+  "category": "TypeScript",
+  "subCategory": "Type Safety",
+  "context": {
+    "scope": "Type Assertions",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "type casting",
+      "type assertions"
+    ]
+  },
+  "pattern": {
+    "description": "Avoid unnecessary type casting when the type is already inferred correctly",
+    "codePatterns": [
+      "(?:as|<)\\s*[A-Z][A-Za-z]*\\s*>",
+      "as\\s+[A-Z][A-Za-z]*"
+    ],
+    "conditions": {
+      "typeIsAlreadyInferred": true,
+      "noTypeConflict": true
+    }
+  },
+  "recommendation": {
+    "action": "remove",
+    "description": "Remove redundant type assertions when TypeScript can infer the type correctly",
+    "codeExamples": {
+      "before": "const [error, setError] = useState<string | undefined>()",
+      "after": "const [error, setError] = useState()"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-002",
+      "relationship": "complementary",
+      "description": "Type assertions affect props type safety",
+      "relevance": "Clean type usage ensures prop type safety"
+    },
+    {
+      "ruleId": "TS-002",
+      "relationship": "related",
+      "description": "Type assertions relate to type definitions",
+      "relevance": "Consistent type usage across definitions"
+    },
+    {
+      "ruleId": "REACT-006",
+      "relationship": "dependent",
+      "description": "Type safety crucial for advanced patterns",
+      "relevance": "Complex patterns require careful typing"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Unnecessary type assertions can hide potential type errors and make the code harder to maintain. TypeScript's type inference is usually sufficient."
+}

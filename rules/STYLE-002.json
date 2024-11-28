@@ -1,0 +1,77 @@
+{
+  "ruleId": "STYLE-002",
+  "version": "1.0",
+  "category": "Styling",
+  "subCategory": "CSS Units",
+  "context": {
+    "scope": "CSS Properties and Values",
+    "applicableFiles": [
+      "*.tsx",
+      "*.css",
+      "*.scss"
+    ],
+    "triggers": [
+      "size units",
+      "spacing values",
+      "font-size definitions"
+    ]
+  },
+  "pattern": {
+    "description": "Use appropriate CSS units for responsive design and accessibility",
+    "codePatterns": [
+      "[0-9]+px",
+      "min-h-\\[.*px\\]",
+      "text-\\[.*px\\]"
+    ],
+    "conditions": {
+      "isStyleDefinition": true,
+      "affectsLayout": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use relative units and modern spacing techniques",
+    "codeExamples": {
+      "units": {
+        "avoid": [
+          "min-h-[24px]",
+          "text-[16px]",
+          "mt-3"
+        ],
+        "prefer": [
+          "min-h-6",
+          "text-base",
+          "gap-3"
+        ]
+      }
+    },
+    "principles": [
+      "Use rem for font sizes and related dimensions",
+      "Prefer gap over margin for consistent spacing",
+      "Use design system scales instead of arbitrary values",
+      "Consider accessibility and user preferences"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-004",
+      "relationship": "complementary",
+      "description": "CSS units affect component flexibility and accessibility",
+      "relevance": "Proper units support responsive and accessible design"
+    },
+    {
+      "ruleId": "STYLE-003",
+      "relationship": "related",
+      "description": "Unit choices affect utility class patterns",
+      "relevance": "Consistent units in utility class usage"
+    },
+    {
+      "ruleId": "REACT-007",
+      "relationship": "dependent",
+      "description": "CSS units impact DOM structure effectiveness",
+      "relevance": "Units should support clean, semantic structure"
+    }
+  ],
+  "severity": "medium",
+  "rationale": "Using appropriate CSS units and modern spacing techniques ensures better accessibility, responsiveness, and maintainability."
+}

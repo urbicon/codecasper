@@ -1,0 +1,101 @@
+{
+  "ruleId": "NEXT-002",
+  "version": "1.0",
+  "category": "Framework",
+  "subCategory": "Component Architecture",
+  "context": {
+    "scope": "Server/Client Component Decision",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "component type decisions",
+      "static vs dynamic content",
+      "client-side interactivity"
+    ]
+  },
+  "pattern": {
+    "description": "Choose between server and client components based on requirements",
+    "codePatterns": [
+      "'use client'",
+      "useState",
+      "onClick",
+      "interactive elements"
+    ],
+    "conditions": {
+      "needsInteractivity": true,
+      "hasStaticContent": true,
+      "usesBrowserAPIs": true
+    }
+  },
+  "recommendation": {
+    "action": "evaluate",
+    "description": "Default to server components unless client-side functionality is needed",
+    "codeExamples": {
+      "serverComponent": {
+        "scenario": "Static content with known data",
+        "example": [
+          "// Stepper indicator with static steps",
+          "type StepProps = {",
+          "  label: string,",
+          "  href: string | null,",
+          "  active: boolean",
+          "}",
+          "",
+          "export function Stepper({ steps }: { steps: StepProps[] }) {",
+          "  return (",
+          "    <nav>",
+          "      {steps.map(step => step.href ? ",
+          "        <Link href={step.href}>{step.label}</Link> : ",
+          "        <span>{step.label}</span>",
+          "      )}",
+          "    </nav>",
+          "  )",
+          "}"
+        ],
+        "explanation": "No client-side state or interactivity needed"
+      },
+      "clientComponent": {
+        "scenario": "Interactive features needed",
+        "example": [
+          "'use client'",
+          "",
+          "export function InteractiveStepper() {",
+          "  const [currentStep, setCurrentStep] = useState(0)",
+          "  // Interactive implementation...",
+          "}"
+        ],
+        "explanation": "Requires client-side state management"
+      }
+    },
+    "principles": [
+      "Server components should be the default choice",
+      "Use client components only when necessary for interactivity",
+      "Consider static rendering opportunities",
+      "Keep data requirements in mind"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "NEXT-001",
+      "relationship": "complementary",
+      "description": "Component type decisions affect server features usage",
+      "relevance": "Server/Client split decisions impact feature usage"
+    },
+    {
+      "ruleId": "REACT-004",
+      "relationship": "dependent",
+      "description": "Component declaration affects server/client split",
+      "relevance": "Declaration style should reflect server/client nature"
+    },
+    {
+      "ruleId": "REACT-006",
+      "relationship": "related",
+      "description": "Advanced patterns may affect server/client behavior",
+      "relevance": "Consider server/client implications when using advanced patterns"
+    }
+  ],
+  "severity": "high",
+  "rationale": "Proper server/client component decisions enhance performance and user experience while maintaining code simplicity."
+}

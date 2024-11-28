@@ -1,0 +1,114 @@
+{
+  "ruleId": "ARCH-004",
+  "version": "1.0",
+  "category": "Architecture",
+  "subCategory": "Project Structure",
+  "context": {
+    "scope": "Project Organization",
+    "applicableFiles": [
+      "**/*"
+    ],
+    "triggers": [
+      "folder creation",
+      "component placement",
+      "code organization"
+    ]
+  },
+  "pattern": {
+    "description": "Follow the defined project structure for code organization",
+    "conditions": {
+      "isNewCode": true,
+      "needsPlacement": true
+    }
+  },
+  "recommendation": {
+    "action": "organize",
+    "description": "Place code in the appropriate directory following the project structure",
+    "codeExamples": {
+      "folderTypes": {
+        "pages": {
+          "description": "Entry points for routes",
+          "structure": [
+            "pages/",
+            "  [page-name]/",
+            "    data-access/",
+            "    ui/",
+            "    utils/",
+            "    models/",
+            "    providers/",
+            "    schemas/",
+            "    [page-name].tsx"
+          ]
+        },
+        "features": {
+          "description": "Smart UI components with data access",
+          "structure": [
+            "features/",
+            "  [feature-name]/",
+            "    data-access/",
+            "    ui/",
+            "    utils/",
+            "    models/",
+            "    providers/",
+            "    schemas/",
+            "    [feature-name-variant-1].tsx"
+          ]
+        },
+        "ui": {
+          "description": "Presentational components",
+          "structure": [
+            "ui/",
+            "  [component-name]/",
+            "    ui/",
+            "    utils/",
+            "    models/",
+            "    [component-name-variant].tsx"
+          ]
+        },
+        "shared": {
+          "description": "Cross-feature functionality",
+          "structure": [
+            "shared/",
+            "  data-access/",
+            "    [grouping]/",
+            "  models/",
+            "  schemas/",
+            "  utils/",
+            "    [grouping]/"
+          ]
+        }
+      }
+    },
+    "principles": [
+      "Keep pages as entry points only",
+      "Place business logic in features",
+      "Keep UI components purely presentational",
+      "Use shared for cross-cutting concerns",
+      "Follow consistent internal structure for each type",
+      "Use kebab-case for all folder names except React components",
+      "Separate client/server code with .client/.server suffixes"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "ARCH-003",
+      "relationship": "complementary",
+      "description": "Project structure enables correct import patterns",
+      "relevance": "Proper structure is needed for consistent imports"
+    },
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "related",
+      "description": "Structure affects server/client component organization",
+      "relevance": "Server/Client split needs proper folder organization"
+    },
+    {
+      "ruleId": "REACT-004",
+      "relationship": "related",
+      "description": "Component declaration follows project structure",
+      "relevance": "Structure defines where different component types live"
+    }
+  ],
+  "severity": "high",
+  "rationale": "A consistent project structure is crucial for maintainability, scalability, and team collaboration. It provides clear locations for different types of code, prevents circular dependencies, and supports the separation of concerns. This structure particularly enables isolated feature development and A/B testing capabilities while maintaining clear boundaries between different types of components."
+}

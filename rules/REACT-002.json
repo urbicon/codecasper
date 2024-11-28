@@ -1,0 +1,64 @@
+{
+  "ruleId": "REACT-002",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Component Design",
+  "context": {
+    "scope": "Component Props",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "optional props definition",
+      "props interface"
+    ]
+  },
+  "pattern": {
+    "description": "Mark props as required if they are essential for component functionality",
+    "codePatterns": [
+      "onChange\\?:",
+      "value\\?:",
+      "onSelect\\?:"
+    ],
+    "conditions": {
+      "isComponentProp": true,
+      "isEssentialForFunction": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Remove the optional marker (?) from props that are essential for component functionality",
+    "codeExamples": {
+      "before": "interface DateFilterProps { onChange?: (value: DateValue) => void }",
+      "after": "interface DateFilterProps { onChange: (value: DateValue) => void }"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-004",
+      "relationship": "complementary",
+      "description": "Props handling relates to component declaration",
+      "relevance": "Clear props structure supports component clarity"
+    },
+    {
+      "ruleId": "TS-001",
+      "relationship": "dependent",
+      "description": "Type safety affects props definitions",
+      "relevance": "Strong typing ensures proper props usage"
+    },
+    {
+      "ruleId": "REACT-007",
+      "relationship": "related",
+      "description": "Props design affects DOM structure",
+      "relevance": "Props should support semantic DOM structure"
+    }
+  ],
+  "severity": "high",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "If a prop is essential for component functionality, it should be marked as required to prevent runtime errors and make the API contract clear."
+}

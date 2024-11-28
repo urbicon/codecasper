@@ -1,0 +1,58 @@
+{
+  "ruleId": "NEXT-003",
+  "version": "1.0",
+  "category": "Framework",
+  "subCategory": "Internationalization",
+  "context": {
+    "scope": "Locale Handling",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "locale definitions",
+      "date formatting",
+      "currency formatting"
+    ]
+  },
+  "pattern": {
+    "description": "Use dynamic locale from the framework's i18n context",
+    "codePatterns": [
+      "locales:\\s*'[a-z]{2}-[A-Z]{2}'",
+      "locale:\\s*'[a-z]{2}-[A-Z]{2}'"
+    ],
+    "conditions": {
+      "hasHardcodedLocale": true,
+      "usesFormatting": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use the current locale from the framework's i18n context",
+    "codeExamples": {
+      "before": "useFormatDateTime(date, { locales: 'de-DE' })",
+      "after": "useFormatDateTime(date, { locales: locale })"
+    },
+    "principles": [
+      "Use framework's locale management",
+      "Avoid hardcoded locales",
+      "Support dynamic locale switching",
+      "Maintain consistent localization"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "DEP-002",
+      "relationship": "complementary",
+      "description": "Framework features for internationalization",
+      "relevance": "Use built-in i18n capabilities"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Hardcoded locales prevent proper internationalization and make locale switching impossible. Using the framework's locale context ensures consistent localization across the application."
+}

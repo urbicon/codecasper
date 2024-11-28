@@ -1,0 +1,63 @@
+{
+  "ruleId": "STYLE-004",
+  "version": "1.0",
+  "category": "Styling",
+  "subCategory": "Accessibility",
+  "context": {
+    "scope": "Component Layout & Sizing",
+    "applicableFiles": ["*.tsx", "*.jsx"],
+    "triggers": [
+      "fixed height definitions",
+      "static sizing",
+      "height constraints"
+    ]
+  },
+  "pattern": {
+    "description": "Avoid fixed heights that could cause content overflow with different font sizes or zoom levels",
+    "codePatterns": [
+      "h-[0-9]+",
+      "height: [0-9]+",
+      "min-height: [0-9]+"
+    ],
+    "conditions": {
+      "containsText": true,
+      "usesStaticHeight": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use min-height with padding or flex patterns that can accommodate varying content sizes",
+    "codeExamples": {
+      "before": "<div className='h-11 items-center'>Content</div>",
+      "after": "<div className='min-h-[2.75rem] py-2 flex items-center'>Content</div>"
+    },
+    "principles": [
+      "Prefer minimum heights over fixed heights",
+      "Use padding to control spacing",
+      "Allow content to determine container size",
+      "Consider font size changes and zoom levels"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-003",
+      "relationship": "complementary",
+      "description": "When adjusting height constraints, consider utility class organization patterns for consistent spacing and layout",
+      "relevance": "Utility class combinations like 'min-h-[x] py-y flex items-center' should follow consistent patterns"
+    },
+    {
+      "ruleId": "REACT-007",
+      "relationship": "dependent",
+      "description": "Component structure affects how sizing constraints should be applied",
+      "relevance": "Height constraints should respect the semantic structure of the component and its content"
+    },
+    {
+      "ruleId": "REACT-003",
+      "relationship": "related",
+      "description": "Component layout flexibility relates to proper prop handling",
+      "relevance": "Consider making height/sizing configurable through props when appropriate"
+    }
+  ],
+  "severity": "high",
+  "rationale": "Fixed heights can break layouts when users change font sizes or zoom levels, affecting accessibility. Components should be flexible enough to accommodate varying content sizes."
+}

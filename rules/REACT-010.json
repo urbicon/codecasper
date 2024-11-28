@@ -1,0 +1,58 @@
+{
+  "ruleId": "REACT-010",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "JSX Syntax",
+  "context": {
+    "scope": "Component Markup",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "empty elements",
+      "fragments",
+      "jsx syntax"
+    ]
+  },
+  "pattern": {
+    "description": "Use proper JSX syntax patterns",
+    "codePatterns": [
+      "<.*></.*>",
+      "<>.*</>"
+    ],
+    "conditions": {
+      "hasNoChildren": true,
+      "isFragment": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use self-closing tags for empty elements and avoid unnecessary fragments",
+    "codeExamples": {
+      "emptyTags": {
+        "before": "<UiIcon></UiIcon>",
+        "after": "<UiIcon />"
+      },
+      "fragments": {
+        "before": "<><Currency value={value} /></>",
+        "after": "<Currency value={value} />"
+      }
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-007",
+      "relationship": "complementary",
+      "description": "Clean JSX syntax supports DOM structure",
+      "relevance": "Proper syntax improves code readability"
+    }
+  ],
+  "severity": "low",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Consistent JSX syntax patterns improve code readability and maintainability. Self-closing tags for empty elements are more concise, and unnecessary fragments add complexity without benefit."
+}

@@ -1,0 +1,50 @@
+{
+  "ruleId": "REACT-009",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Props Hygiene",
+  "context": {
+    "scope": "Component Props",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "empty prop values",
+      "unnecessary props"
+    ]
+  },
+  "pattern": {
+    "description": "Avoid passing empty or unnecessary props to components",
+    "codePatterns": [
+      "className=\"\"",
+      "style={{}}"
+    ],
+    "conditions": {
+      "hasEmptyPropValue": true
+    }
+  },
+  "recommendation": {
+    "action": "remove",
+    "description": "Remove props that have empty values",
+    "codeExamples": {
+      "before": "<TableCell className=\"\">",
+      "after": "<TableCell>"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-007",
+      "relationship": "complementary",
+      "description": "Clean DOM structure includes proper prop usage",
+      "relevance": "Unnecessary props add noise to component structure"
+    }
+  ],
+  "severity": "low",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Empty props add unnecessary noise to the code and can impact readability and maintenance. They should be removed to keep the code clean and efficient."
+}

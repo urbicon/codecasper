@@ -1,0 +1,85 @@
+{
+  "ruleId": "REACT-006",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Advanced Patterns",
+  "context": {
+    "scope": "React Component Patterns",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "forwardRef usage",
+      "displayName setting",
+      "ref handling"
+    ]
+  },
+  "pattern": {
+    "description": "Use React patterns appropriately and only when necessary",
+    "codePatterns": [
+      "forwardRef<.*>\\(",
+      "\\.displayName\\s*=",
+      "React\\.forwardRef"
+    ],
+    "conditions": {
+      "usesRefs": true,
+      "isDefaultExport": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Only use advanced React patterns when they serve a clear purpose",
+    "codeExamples": {
+      "unnecessary": {
+        "forwardRef": [
+          "export const UiNavigation = forwardRef<HTMLUListElement>((_, ref) => {",
+          "// When the component doesn't actually need ref forwarding"
+        ],
+        "displayName": [
+          "UiNavigation.displayName = 'UiNavigation'",
+          "// When component is the only export and name is clear from filename"
+        ]
+      },
+      "necessary": {
+        "forwardRef": [
+          "export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {",
+          "// When the component needs to forward ref to underlying DOM element"
+        ]
+      }
+    },
+    "principles": [
+      "Only use forwardRef when component needs to forward refs to internal elements",
+      "Avoid displayName for single, clearly named exports",
+      "Keep component implementation as simple as possible",
+      "Remove unnecessary React patterns that add complexity"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "dependent",
+      "description": "Advanced patterns must consider server/client context",
+      "relevance": "Some patterns may not work in server components"
+    },
+    {
+      "ruleId": "REACT-004",
+      "relationship": "complementary",
+      "description": "Advanced patterns affect component declaration",
+      "relevance": "Pattern usage should be reflected in component structure"
+    },
+    {
+      "ruleId": "TS-002",
+      "relationship": "related",
+      "description": "Advanced patterns often require careful typing",
+      "relevance": "Complex patterns need clear type definitions"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Unnecessary use of advanced React patterns adds complexity without benefit. Each pattern should only be used when it serves a clear purpose in the component's functionality."
+}

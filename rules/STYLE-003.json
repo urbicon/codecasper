@@ -1,0 +1,78 @@
+{
+  "ruleId": "STYLE-003",
+  "version": "1.0",
+  "category": "Styling",
+  "subCategory": "Utility Classes",
+  "context": {
+    "scope": "CSS Utility Classes",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "className definitions",
+      "utility combinations",
+      "typography classes"
+    ]
+  },
+  "pattern": {
+    "description": "Use consistent, organized utility classes with helper abstractions",
+    "codePatterns": [
+      "className=\\{cn\\(",
+      "cva\\(",
+      "text-[a-z-]+"
+    ],
+    "conditions": {
+      "usesUtilityClasses": true,
+      "hasRepeatingPatterns": true
+    }
+  },
+  "recommendation": {
+    "action": "refactor",
+    "description": "Use typography helpers and consistent utility patterns",
+    "codeExamples": {
+      "typography": {
+        "avoid": "className={cn('text-sm leading-none body-body-s-default')}",
+        "prefer": "className={typography.bodySmall}"
+      },
+      "spacing": {
+        "avoid": [
+          "<ul className='space-y-3'>",
+          "  <li className='mt-3'>"
+        ],
+        "prefer": [
+          "<ul className='gap-3'>",
+          "  <li>"
+        ]
+      }
+    },
+    "principles": [
+      "Use typography helper classes for consistent text styling",
+      "Prefer modern CSS features over utility combinations",
+      "Create abstractions for commonly used patterns",
+      "Keep utility combinations DRY"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-002",
+      "relationship": "related",
+      "description": "Utility patterns should use consistent units",
+      "relevance": "Unit consistency in utility class combinations"
+    },
+    {
+      "ruleId": "REACT-007",
+      "relationship": "complementary",
+      "description": "Utility organization supports DOM structure",
+      "relevance": "Clean utility patterns enable semantic markup"
+    },
+    {
+      "ruleId": "STYLE-004",
+      "relationship": "related",
+      "description": "Utility patterns affect component flexibility",
+      "relevance": "Patterns should support accessible, responsive design"
+    }
+  ],
+  "severity": "medium",
+  "rationale": "Organized utility classes with proper abstractions improve maintainability and consistency while reducing duplication."
+}

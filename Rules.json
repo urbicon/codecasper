@@ -1,0 +1,2009 @@
+[
+  {
+    "ruleId": "ARCH-001",
+    "version": "1.0",
+    "category": "Architecture",
+    "subCategory": "Component Design",
+    "context": {
+      "scope": "Component Organization and Structure",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "component organization",
+        "component props",
+        "UI libraries usage"
+      ]
+    },
+    "pattern": {
+      "description": "Structure components and their organization following consistent patterns",
+      "codePatterns": [
+        "className=\\{className\\}",
+        "export.*function.*Container",
+        "<Card.*>"
+      ],
+      "conditions": {
+        "isUIComponent": true,
+        "hasSharedProps": true
+      }
+    },
+    "recommendation": {
+      "action": "restructure",
+      "description": "Follow consistent component organization patterns",
+      "codeExamples": {
+        "containerComponents": {
+          "before": [
+            "<div className='space-y-6'>",
+            "  <Container>{children}</Container>",
+            "</div>"
+          ],
+          "after": [
+            "<Container className='space-y-6'>",
+            "  {children}",
+            "</Container>"
+          ]
+        },
+        "libraryUsage": {
+          "explanation": "Use shadcn/ui components as base, extend with specific implementations",
+          "example": [
+            "// ui/card.tsx - Base component",
+            "export { Card } from '@/components/ui/card'",
+            "",
+            "// features/dashboard/components/DashboardCard.tsx - Specific implementation",
+            "import { Card } from '@/components/ui/card'",
+            "export function DashboardCard({ children }) {",
+            "  return <Card className='dashboard-specific-styles'>{children}</Card>",
+            "}"
+          ]
+        }
+      },
+      "principles": [
+        "Keep base UI components generic and extensible",
+        "Place specific implementations close to their usage",
+        "Allow for composition through props",
+        "Minimize wrapper divs through proper prop handling"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-001",
+        "relationship": "complementary",
+        "description": "Component organization patterns should follow consistent import patterns",
+        "relevance": "Import structure supports the overall component architecture"
+      },
+      {
+        "ruleId": "REACT-004",
+        "relationship": "dependent",
+        "description": "Component declaration style affects the overall architecture",
+        "relevance": "Consistent component structure is key to maintainable architecture"
+      },
+      {
+        "ruleId": "STYLE-003",
+        "relationship": "related",
+        "description": "Utility organization affects component structure",
+        "relevance": "Consistent styling patterns support architectural goals"
+      }
+    ],
+    "severity": "medium",
+    "rationale": "Consistent component architecture improves maintainability, reusability, and reduces redundancy."
+  },
+  {
+    "ruleId": "ARCH-002",
+    "version": "1.0",
+    "category": "Architecture",
+    "subCategory": "Code Organization",
+    "context": {
+      "scope": "Shared Utilities",
+      "applicableFiles": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "triggers": [
+        "utility imports",
+        "shared functionality"
+      ]
+    },
+    "pattern": {
+      "description": "Shared utilities should be placed in designated shared folders",
+      "codePatterns": [
+        "import.*from '\\.\\./\\.\\./\\.\\./'"
+      ],
+      "conditions": {
+        "isUtilityFunction": true,
+        "isUsedInMultiplePlaces": true
+      }
+    },
+    "recommendation": {
+      "action": "move",
+      "description": "Move shared utilities to the shared folder structure",
+      "codeExamples": {
+        "before": "import { formatCurrency } from '../../../pages/sales-report/utils'",
+        "after": "import { formatCurrency } from '@/shared/utils/currency'"
+      },
+      "principles": [
+        "Keep shared utilities in a central location",
+        "Avoid deep relative imports",
+        "Make shared code easily discoverable"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "ARCH-001",
+        "relationship": "complementary",
+        "description": "Code organization supports overall architecture",
+        "relevance": "Proper utility placement improves maintainability"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Centralized shared utilities improve maintainability, prevent code duplication, and make the codebase more organized. Deep relative imports make code harder to refactor and maintain."
+  },
+  {
+    "ruleId": "ARCH-003",
+    "version": "1.0",
+    "category": "Architecture",
+    "subCategory": "Import Structure",
+    "context": {
+      "scope": "Library Structure and Imports",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts",
+        "tsconfig.json"
+      ],
+      "triggers": [
+        "library imports",
+        "import paths",
+        "library structure",
+        "nx library generation",
+        "library setup"
+      ]
+    },
+    "pattern": {
+      "description": "Library imports should follow consistent naming and path conventions",
+      "codePatterns": [
+        "@[a-z-]+/ui-[a-z-]+",
+        "@[a-z-]+/ui/[a-z-]+",
+        "\"@tba-fe-seller-portal/ui-",
+        "from '\\.\\./\\.\\./ui-"
+      ],
+      "conditions": {
+        "isLibraryImport": true,
+        "hasInconsistentImports": true,
+        "examples": [
+          "import { Card } from '@tba-fe-seller-portal/ui-card'  // Falsch",
+          "import { Alert } from '@tba-fe-seller-portal/ui/alert'  // Richtig"
+        ]
+      }
+    },
+    "recommendation": {
+      "action": "standardize",
+      "description": "Use consistent import paths and library structure following NX patterns",
+      "codeExamples": {
+        "importPaths": {
+          "before": [
+            "import { Card } from '@tba-fe-seller-portal/ui-card'",
+            "import { Button } from '@tba-fe-seller-portal/ui/button'"
+          ],
+          "after": [
+            "import { Card } from '@tba-fe-seller-portal/ui/card'",
+            "import { Button } from '@tba-fe-seller-portal/ui/button'"
+          ]
+        },
+        "libraryName": {
+          "explanation": "Use namespace-prefixed names for libraries",
+          "before": "name: page-container",
+          "after": "name: ui-page-container"
+        },
+        "libraryGeneration": {
+          "explanation": "Generate libraries using the NX CLI or Console",
+          "example": [
+            "nx g @nx/next:library",
+            "  --directory=libs/ui/page-container",
+            "  --name=ui-page-container",
+            "  --importPath=@tba-fe-seller-portal/ui/page-container",
+            "  --style=none",
+            "  --unitTestRunner=none"
+          ]
+        },
+        "cleanup": {
+          "explanation": "Remove boilerplate after generation",
+          "steps": [
+            "1. Delete src/server.ts and src/lib/hello-server.ts",
+            "2. Remove /server paths from tsconfig.base.json"
+          ]
+        }
+      },
+      "principles": [
+        "Use consistent import paths across all libraries",
+        "Follow the established folder structure",
+        "Maintain clear namespace separation",
+        "Keep library names in kebab-case"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "ARCH-004",
+        "relationship": "dependent",
+        "description": "Project structure defines where imports should come from",
+        "relevance": "Proper folder structure enables correct imports"
+      },
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "related",
+        "description": "Server/Client component decisions affect import patterns",
+        "relevance": "Different import patterns for server and client components"
+      }
+    ],
+    "severity": "high",
+    "rationale": "Consistent import paths and library structure improve maintainability, reduce confusion, and ensure proper code organization in the monorepo. This is especially important for large teams working on shared codebases."
+  },
+  {
+    "ruleId": "ARCH-004",
+    "version": "1.0",
+    "category": "Architecture",
+    "subCategory": "Project Structure",
+    "context": {
+      "scope": "Project Organization",
+      "applicableFiles": [
+        "**/*"
+      ],
+      "triggers": [
+        "folder creation",
+        "component placement",
+        "code organization"
+      ]
+    },
+    "pattern": {
+      "description": "Follow the defined project structure for code organization",
+      "conditions": {
+        "isNewCode": true,
+        "needsPlacement": true
+      }
+    },
+    "recommendation": {
+      "action": "organize",
+      "description": "Place code in the appropriate directory following the project structure",
+      "codeExamples": {
+        "folderTypes": {
+          "pages": {
+            "description": "Entry points for routes",
+            "structure": [
+              "pages/",
+              "  [page-name]/",
+              "    data-access/",
+              "    ui/",
+              "    utils/",
+              "    models/",
+              "    providers/",
+              "    schemas/",
+              "    [page-name].tsx"
+            ]
+          },
+          "features": {
+            "description": "Smart UI components with data access",
+            "structure": [
+              "features/",
+              "  [feature-name]/",
+              "    data-access/",
+              "    ui/",
+              "    utils/",
+              "    models/",
+              "    providers/",
+              "    schemas/",
+              "    [feature-name-variant-1].tsx"
+            ]
+          },
+          "ui": {
+            "description": "Presentational components",
+            "structure": [
+              "ui/",
+              "  [component-name]/",
+              "    ui/",
+              "    utils/",
+              "    models/",
+              "    [component-name-variant].tsx"
+            ]
+          },
+          "shared": {
+            "description": "Cross-feature functionality",
+            "structure": [
+              "shared/",
+              "  data-access/",
+              "    [grouping]/",
+              "  models/",
+              "  schemas/",
+              "  utils/",
+              "    [grouping]/"
+            ]
+          }
+        }
+      },
+      "principles": [
+        "Keep pages as entry points only",
+        "Place business logic in features",
+        "Keep UI components purely presentational",
+        "Use shared for cross-cutting concerns",
+        "Follow consistent internal structure for each type",
+        "Use kebab-case for all folder names except React components",
+        "Separate client/server code with .client/.server suffixes"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "ARCH-003",
+        "relationship": "complementary",
+        "description": "Project structure enables correct import patterns",
+        "relevance": "Proper structure is needed for consistent imports"
+      },
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "related",
+        "description": "Structure affects server/client component organization",
+        "relevance": "Server/Client split needs proper folder organization"
+      },
+      {
+        "ruleId": "REACT-004",
+        "relationship": "related",
+        "description": "Component declaration follows project structure",
+        "relevance": "Structure defines where different component types live"
+      }
+    ],
+    "severity": "high",
+    "rationale": "A consistent project structure is crucial for maintainability, scalability, and team collaboration. It provides clear locations for different types of code, prevents circular dependencies, and supports the separation of concerns. This structure particularly enables isolated feature development and A/B testing capabilities while maintaining clear boundaries between different types of components."
+  },
+  {
+    "ruleId": "DEP-001",
+    "version": "1.0",
+    "category": "Dependencies",
+    "subCategory": "Version Management",
+    "context": {
+      "scope": "Package Dependencies",
+      "applicableFiles": [
+        "package.json"
+      ],
+      "triggers": [
+        "dependency version specifications"
+      ]
+    },
+    "pattern": {
+      "description": "Dependencies should use exact versions instead of ranges",
+      "codePatterns": [
+        "\"^[0-9]\"",
+        "\"~[0-9]\"",
+        "\">=[0-9]\""
+      ],
+      "conditions": {
+        "isInPackageJson": true,
+        "isDependencyVersion": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use exact versions for all dependencies to ensure consistency",
+      "codeExamples": {
+        "before": "\"@radix-ui/react-checkbox\": \"^1.1.2\"",
+        "after": "\"@radix-ui/react-checkbox\": \"1.1.2\""
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "DEP-002",
+        "relationship": "complementary",
+        "description": "Version management relates to library selection decisions",
+        "relevance": "Both rules ensure consistent and maintainable dependencies"
+      },
+      {
+        "ruleId": "TEST-001",
+        "relationship": "related",
+        "description": "Clean dependencies contribute to clean production code",
+        "relevance": "Both focus on maintaining clean, production-ready code"
+      }
+    ],
+    "severity": "high",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Using exact versions prevents unexpected updates and ensures consistent behavior across all installations."
+  },
+  {
+    "ruleId": "DEP-002",
+    "version": "1.0",
+    "category": "Dependencies",
+    "subCategory": "Library Selection",
+    "context": {
+      "scope": "Date Handling",
+      "applicableFiles": [
+        "package.json",
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "date-fns usage",
+        "date handling imports"
+      ]
+    },
+    "pattern": {
+      "description": "Prefer built-in framework functions over external libraries when available",
+      "codePatterns": [
+        "import.*from 'date-fns'",
+        "\"date-fns\": \"[0-9]"
+      ],
+      "conditions": {
+        "hasBuiltInAlternative": true,
+        "frameworkProvidesFunctionality": true
+      }
+    },
+    "recommendation": {
+      "action": "replace",
+      "description": "Use next-intl's built-in date handling functions instead of date-fns",
+      "codeExamples": {
+        "before": "import { format } from 'date-fns'",
+        "after": "import { useFormatter } from 'next-intl'"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "DEP-001",
+        "relationship": "complementary",
+        "description": "Library selection affects version management strategy",
+        "relevance": "Choice of libraries impacts version management decisions"
+      },
+      {
+        "ruleId": "NEXT-001",
+        "relationship": "dependent",
+        "description": "Framework features influence library choices",
+        "relevance": "Prefer framework-provided solutions over external libraries"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Using framework-provided functionality reduces bundle size and ensures consistent behavior across the application."
+  },
+  {
+    "ruleId": "NEXT-001",
+    "version": "1.0",
+    "category": "Framework",
+    "subCategory": "Next.js",
+    "context": {
+      "scope": "Server Components and Actions",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "'use server' directive",
+        "async functions",
+        "server actions"
+      ]
+    },
+    "pattern": {
+      "description": "Use Next.js server features appropriately",
+      "codePatterns": [
+        "'use server'",
+        "async function",
+        "export async function"
+      ],
+      "conditions": {
+        "isServerAction": true,
+        "isAsyncFunction": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Only use server directives when explicitly needed",
+      "codeExamples": {
+        "unnecessary": {
+          "before": [
+            "'use server'",
+            "export async function PageComponent() {",
+            "  return <div>Content</div>",
+            "}"
+          ],
+          "explanation": "Async components are server components by default"
+        },
+        "necessary": {
+          "example": [
+            "'use server'",
+            "export async function submitForm(data: FormData) {",
+            "  // Server-side form processing",
+            "}"
+          ],
+          "explanation": "Use 'use server' for explicit server actions"
+        }
+      },
+      "principles": [
+        "Async functions are server components by default",
+        "Use 'use server' only for explicit server actions",
+        "Keep server/client separation clear",
+        "Follow Next.js server component patterns"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "complementary",
+        "description": "Server/Client component decisions affect server features usage",
+        "relevance": "Both rules guide proper use of Next.js features"
+      },
+      {
+        "ruleId": "DEP-002",
+        "relationship": "complementary",
+        "description": "Framework features influence library choices",
+        "relevance": "Use framework features instead of external libraries when possible"
+      },
+      {
+        "ruleId": "REACT-006",
+        "relationship": "related",
+        "description": "Advanced React patterns interact with Next.js features",
+        "relevance": "Consider framework context when using advanced React patterns"
+      }
+    ],
+    "severity": "medium",
+    "rationale": "Proper use of Next.js server features ensures optimal performance and correct server/client separation."
+  },
+  {
+    "ruleId": "NEXT-002",
+    "version": "1.0",
+    "category": "Framework",
+    "subCategory": "Component Architecture",
+    "context": {
+      "scope": "Server/Client Component Decision",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "component type decisions",
+        "static vs dynamic content",
+        "client-side interactivity"
+      ]
+    },
+    "pattern": {
+      "description": "Choose between server and client components based on requirements",
+      "codePatterns": [
+        "'use client'",
+        "useState",
+        "onClick",
+        "interactive elements"
+      ],
+      "conditions": {
+        "needsInteractivity": true,
+        "hasStaticContent": true,
+        "usesBrowserAPIs": true
+      }
+    },
+    "recommendation": {
+      "action": "evaluate",
+      "description": "Default to server components unless client-side functionality is needed",
+      "codeExamples": {
+        "serverComponent": {
+          "scenario": "Static content with known data",
+          "example": [
+            "// Stepper indicator with static steps",
+            "type StepProps = {",
+            "  label: string,",
+            "  href: string | null,",
+            "  active: boolean",
+            "}",
+            "",
+            "export function Stepper({ steps }: { steps: StepProps[] }) {",
+            "  return (",
+            "    <nav>",
+            "      {steps.map(step => step.href ? ",
+            "        <Link href={step.href}>{step.label}</Link> : ",
+            "        <span>{step.label}</span>",
+            "      )}",
+            "    </nav>",
+            "  )",
+            "}"
+          ],
+          "explanation": "No client-side state or interactivity needed"
+        },
+        "clientComponent": {
+          "scenario": "Interactive features needed",
+          "example": [
+            "'use client'",
+            "",
+            "export function InteractiveStepper() {",
+            "  const [currentStep, setCurrentStep] = useState(0)",
+            "  // Interactive implementation...",
+            "}"
+          ],
+          "explanation": "Requires client-side state management"
+        }
+      },
+      "principles": [
+        "Server components should be the default choice",
+        "Use client components only when necessary for interactivity",
+        "Consider static rendering opportunities",
+        "Keep data requirements in mind"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "NEXT-001",
+        "relationship": "complementary",
+        "description": "Component type decisions affect server features usage",
+        "relevance": "Server/Client split decisions impact feature usage"
+      },
+      {
+        "ruleId": "REACT-004",
+        "relationship": "dependent",
+        "description": "Component declaration affects server/client split",
+        "relevance": "Declaration style should reflect server/client nature"
+      },
+      {
+        "ruleId": "REACT-006",
+        "relationship": "related",
+        "description": "Advanced patterns may affect server/client behavior",
+        "relevance": "Consider server/client implications when using advanced patterns"
+      }
+    ],
+    "severity": "high",
+    "rationale": "Proper server/client component decisions enhance performance and user experience while maintaining code simplicity."
+  },
+  {
+    "ruleId": "NEXT-003",
+    "version": "1.0",
+    "category": "Framework",
+    "subCategory": "Internationalization",
+    "context": {
+      "scope": "Locale Handling",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "locale definitions",
+        "date formatting",
+        "currency formatting"
+      ]
+    },
+    "pattern": {
+      "description": "Use dynamic locale from the framework's i18n context",
+      "codePatterns": [
+        "locales:\\s*'[a-z]{2}-[A-Z]{2}'",
+        "locale:\\s*'[a-z]{2}-[A-Z]{2}'"
+      ],
+      "conditions": {
+        "hasHardcodedLocale": true,
+        "usesFormatting": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use the current locale from the framework's i18n context",
+      "codeExamples": {
+        "before": "useFormatDateTime(date, { locales: 'de-DE' })",
+        "after": "useFormatDateTime(date, { locales: locale })"
+      },
+      "principles": [
+        "Use framework's locale management",
+        "Avoid hardcoded locales",
+        "Support dynamic locale switching",
+        "Maintain consistent localization"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "DEP-002",
+        "relationship": "complementary",
+        "description": "Framework features for internationalization",
+        "relevance": "Use built-in i18n capabilities"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Hardcoded locales prevent proper internationalization and make locale switching impossible. Using the framework's locale context ensures consistent localization across the application."
+  },
+  {
+    "ruleId": "REACT-001",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Imports",
+    "context": {
+      "scope": "React Hooks",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "useState import",
+        "React hooks import"
+      ]
+    },
+    "pattern": {
+      "description": "React hooks should be imported at the top level from 'react'",
+      "codePatterns": [
+        "useState(?!.*from 'react')",
+        "useEffect(?!.*from 'react')",
+        "useMemo(?!.*from 'react')"
+      ],
+      "conditions": {
+        "isReactComponent": true,
+        "usesHooks": true
+      }
+    },
+    "recommendation": {
+      "action": "move",
+      "description": "Import all React hooks at the top of the file directly from 'react'",
+      "codeExamples": {
+        "before": "const { useState } = React;",
+        "after": "import { useState } from 'react';"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "ARCH-001",
+        "relationship": "complementary",
+        "description": "Import patterns support component organization",
+        "relevance": "Consistent imports contribute to maintainable architecture"
+      },
+      {
+        "ruleId": "REACT-004",
+        "relationship": "related",
+        "description": "Import style affects component declarations",
+        "relevance": "Consistent imports support clear component structure"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Consistent import patterns improve code readability and maintainability."
+  },
+  {
+    "ruleId": "REACT-002",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Component Design",
+    "context": {
+      "scope": "Component Props",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "optional props definition",
+        "props interface"
+      ]
+    },
+    "pattern": {
+      "description": "Mark props as required if they are essential for component functionality",
+      "codePatterns": [
+        "onChange\\?:",
+        "value\\?:",
+        "onSelect\\?:"
+      ],
+      "conditions": {
+        "isComponentProp": true,
+        "isEssentialForFunction": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Remove the optional marker (?) from props that are essential for component functionality",
+      "codeExamples": {
+        "before": "interface DateFilterProps { onChange?: (value: DateValue) => void }",
+        "after": "interface DateFilterProps { onChange: (value: DateValue) => void }"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-004",
+        "relationship": "complementary",
+        "description": "Props handling relates to component declaration",
+        "relevance": "Clear props structure supports component clarity"
+      },
+      {
+        "ruleId": "TS-001",
+        "relationship": "dependent",
+        "description": "Type safety affects props definitions",
+        "relevance": "Strong typing ensures proper props usage"
+      },
+      {
+        "ruleId": "REACT-007",
+        "relationship": "related",
+        "description": "Props design affects DOM structure",
+        "relevance": "Props should support semantic DOM structure"
+      }
+    ],
+    "severity": "high",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "If a prop is essential for component functionality, it should be marked as required to prevent runtime errors and make the API contract clear."
+  },
+  {
+    "ruleId": "REACT-003",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Component Design",
+    "context": {
+      "scope": "Component Layout",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "width definition",
+        "size constraints"
+      ]
+    },
+    "pattern": {
+      "description": "Components should be flexible and get their layout constraints from parent components",
+      "codePatterns": [
+        "w-[0-9]+",
+        "width: [0-9]+",
+        "maxWidth: [0-9]+"
+      ],
+      "conditions": {
+        "isLayoutConstraint": true,
+        "isHardcoded": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Remove hardcoded widths and let the parent component control the layout",
+      "codeExamples": {
+        "before": "<div className='w-96'>",
+        "after": "<div className='w-full'>"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-003",
+        "relationship": "complementary",
+        "description": "Layout constraints relate to utility class usage",
+        "relevance": "Consistent layout patterns through utility classes"
+      },
+      {
+        "ruleId": "STYLE-004",
+        "relationship": "dependent",
+        "description": "Component sizing affects accessibility",
+        "relevance": "Layout constraints must consider accessibility"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Components should be reusable and flexible. Layout constraints should be controlled by parent components to ensure better reusability and responsiveness."
+  },
+  {
+    "ruleId": "REACT-004",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Component Declaration",
+    "context": {
+      "scope": "React Function Components",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "component definition",
+        "export declarations",
+        "props destructuring"
+      ]
+    },
+    "pattern": {
+      "description": "React components should be declared as named functions with consistent props handling",
+      "codePatterns": [
+        "const\\s+[A-Z][A-Za-z]*\\s*=\\s*\\(",
+        "\\.\\.\\.[a-z]+\\s*}:.*Props\\)",
+        "props\\.[a-zA-Z]+"
+      ],
+      "conditions": {
+        "isReactComponent": true,
+        "hasPropsInterface": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use explicit function declarations with direct props destructuring",
+      "codeExamples": {
+        "before": [
+          "const PageTitle = ({ title, ...props }: PageTitleProps) => {",
+          "return <h1 className={`${props.className}`}>{title}</h1>"
+        ],
+        "after": [
+          "export function PageTitle({ title, className }: PageTitleProps) {",
+          "return <h1 className={className}>{title}</h1>"
+        ]
+      },
+      "principles": [
+        "Use `function` declaration instead of variable assignment",
+        "Destructure all used props directly in the parameters",
+        "Avoid spreading props when specific props are known",
+        "Export the function directly rather than the variable"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-001",
+        "relationship": "related",
+        "description": "Component declaration affects import patterns",
+        "relevance": "Declaration style influences import structure"
+      },
+      {
+        "ruleId": "REACT-002",
+        "relationship": "complementary",
+        "description": "Component declaration includes props handling",
+        "relevance": "Clear declaration supports clear props structure"
+      },
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "related",
+        "description": "Declaration style affects server/client split",
+        "relevance": "Consider framework context in component structure"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Consistent component declarations improve code readability, maintainability, and type safety. Using function declarations over arrow functions provides better error stack traces and debugging experience. Direct props destructuring makes component interfaces explicit and prevents prop drilling. Avoiding unnecessary spreads and using proper exports helps with tree-shaking and bundle optimization."
+  },
+  {
+    "ruleId": "REACT-005",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Naming Conventions",
+    "context": {
+      "scope": "React Component Variables",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "variable naming",
+        "state naming",
+        "flag naming"
+      ]
+    },
+    "pattern": {
+      "description": "Use clear, contextually appropriate names for variables in React components",
+      "codePatterns": [
+        "is[A-Z][a-zA-Z]*",
+        "has[A-Z][a-zA-Z]*",
+        "should[A-Z][a-zA-Z]*"
+      ],
+      "conditions": {
+        "isBoolean": true,
+        "isComponentState": true
+      }
+    },
+    "recommendation": {
+      "action": "rename",
+      "description": "Use names that accurately describe the variable's purpose in the component's context",
+      "codeExamples": {
+        "before": "const isActive = pathname === href",
+        "after": "const isCurrentPath = pathname === href",
+        "explanation": "isCurrentPath better describes what the variable actually represents - it's not about an active state but about path matching"
+      },
+      "principles": [
+        "Names should reflect the actual purpose or meaning",
+        "Avoid misleading names that imply different functionality",
+        "Consider the component's context when choosing names",
+        "Be specific rather than generic"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-001",
+        "relationship": "complementary",
+        "description": "Naming conventions apply to both variables and configuration",
+        "relevance": "Consistent naming improves code clarity across all aspects"
+      },
+      {
+        "ruleId": "TS-001",
+        "relationship": "related",
+        "description": "Clear variable naming supports type safety",
+        "relevance": "Well-named variables make type usage more intuitive"
+      },
+      {
+        "ruleId": "REACT-002",
+        "relationship": "related",
+        "description": "Variable naming affects props clarity",
+        "relevance": "Clear variable names support clear prop interfaces"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Clear and contextually appropriate naming improves code readability and maintainability by accurately representing the variable's purpose and avoiding confusion with similar but different concepts."
+  },
+  {
+    "ruleId": "REACT-006",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Advanced Patterns",
+    "context": {
+      "scope": "React Component Patterns",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "forwardRef usage",
+        "displayName setting",
+        "ref handling"
+      ]
+    },
+    "pattern": {
+      "description": "Use React patterns appropriately and only when necessary",
+      "codePatterns": [
+        "forwardRef<.*>\\(",
+        "\\.displayName\\s*=",
+        "React\\.forwardRef"
+      ],
+      "conditions": {
+        "usesRefs": true,
+        "isDefaultExport": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Only use advanced React patterns when they serve a clear purpose",
+      "codeExamples": {
+        "unnecessary": {
+          "forwardRef": [
+            "export const UiNavigation = forwardRef<HTMLUListElement>((_, ref) => {",
+            "// When the component doesn't actually need ref forwarding"
+          ],
+          "displayName": [
+            "UiNavigation.displayName = 'UiNavigation'",
+            "// When component is the only export and name is clear from filename"
+          ]
+        },
+        "necessary": {
+          "forwardRef": [
+            "export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {",
+            "// When the component needs to forward ref to underlying DOM element"
+          ]
+        }
+      },
+      "principles": [
+        "Only use forwardRef when component needs to forward refs to internal elements",
+        "Avoid displayName for single, clearly named exports",
+        "Keep component implementation as simple as possible",
+        "Remove unnecessary React patterns that add complexity"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "dependent",
+        "description": "Advanced patterns must consider server/client context",
+        "relevance": "Some patterns may not work in server components"
+      },
+      {
+        "ruleId": "REACT-004",
+        "relationship": "complementary",
+        "description": "Advanced patterns affect component declaration",
+        "relevance": "Pattern usage should be reflected in component structure"
+      },
+      {
+        "ruleId": "TS-002",
+        "relationship": "related",
+        "description": "Advanced patterns often require careful typing",
+        "relevance": "Complex patterns need clear type definitions"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Unnecessary use of advanced React patterns adds complexity without benefit. Each pattern should only be used when it serves a clear purpose in the component's functionality."
+  },
+  {
+    "ruleId": "REACT-007",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Component Structure",
+    "context": {
+      "scope": "Component DOM Structure",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "nested elements",
+        "styling location",
+        "event handling"
+      ]
+    },
+    "pattern": {
+      "description": "Structure components to maintain proper DOM hierarchy and event handling",
+      "codePatterns": [
+        "<div>.*<Link",
+        "style=\\{.*\\}",
+        "className=\\{.*\\}"
+      ],
+      "conditions": {
+        "hasNestedInteractiveElements": true,
+        "hasCustomStyling": true
+      }
+    },
+    "recommendation": {
+      "action": "restructure",
+      "description": "Keep styling and interactive elements at the appropriate DOM level",
+      "codeExamples": {
+        "before": [
+          "<Link>",
+          "  <div className='styled-element'>Content</div>",
+          "</Link>"
+        ],
+        "after": [
+          "<Link className='styled-element'>",
+          "  Content",
+          "</Link>"
+        ],
+        "explanation": "Style the Link directly instead of wrapping content in styled divs"
+      },
+      "principles": [
+        "Style the most semantic element",
+        "Avoid unnecessary DOM nesting",
+        "Keep event handlers on interactive elements",
+        "Maintain clean event bubbling chains"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-003",
+        "relationship": "complementary",
+        "description": "DOM structure affects utility class organization",
+        "relevance": "Clean DOM structure enables efficient styling patterns"
+      },
+      {
+        "ruleId": "STYLE-004",
+        "relationship": "dependent",
+        "description": "DOM structure impacts accessibility considerations",
+        "relevance": "Proper structure is crucial for accessibility"
+      },
+      {
+        "ruleId": "REACT-002",
+        "relationship": "related",
+        "description": "Component props should support clean DOM structure",
+        "relevance": "Props design should enable semantic markup"
+      }
+    ],
+    "severity": "high",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Proper component structure ensures correct event handling, maintains accessibility, and simplifies styling maintenance."
+  },
+  {
+    "ruleId": "REACT-008",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Semantics and Integration",
+    "context": {
+      "scope": "HTML Semantics and Framework Features",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "HTML element choice",
+        "framework imports",
+        "accessibility attributes"
+      ]
+    },
+    "pattern": {
+      "description": "Use semantic HTML and framework-provided components appropriately",
+      "codePatterns": [
+        "import.*from 'next/link'",
+        "disabled=",
+        "aria-"
+      ],
+      "conditions": {
+        "isNavigationElement": true,
+        "hasAccessibilityConsiderations": true,
+        "usesFrameworkFeatures": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use framework components and semantic HTML elements correctly",
+      "codeExamples": {
+        "semantics": {
+          "incorrect": "const NavButton = ({ disabled }) => <Link disabled={disabled}>",
+          "correct": "const NavButton = ({ disabled }) => disabled ? <span> : <Link>"
+        },
+        "frameworks": {
+          "incorrect": "import Link from 'next/link'",
+          "correct": "import Link from '@i18n/Link'"
+        }
+      },
+      "principles": [
+        "Use semantic HTML elements appropriately",
+        "Prefer framework-provided components for enhanced functionality",
+        "Consider accessibility implications of element choices",
+        "Use framework features for internationalization"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "NEXT-002",
+        "relationship": "dependent",
+        "description": "Framework features affect semantic choices",
+        "relevance": "Use framework-specific components appropriately"
+      },
+      {
+        "ruleId": "REACT-007",
+        "relationship": "complementary",
+        "description": "Semantics relate to DOM structure",
+        "relevance": "Semantic HTML supports clean component structure"
+      },
+      {
+        "ruleId": "DEP-002",
+        "relationship": "related",
+        "description": "Framework integration affects library choices",
+        "relevance": "Prefer framework-provided semantic elements"
+      },
+      {
+        "ruleId": "STYLE-004",
+        "relationship": "related",
+        "description": "Semantic structure supports accessibility",
+        "relevance": "Proper semantics are crucial for accessibility"
+      }
+    ],
+    "severity": "high",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Using semantic HTML and framework features correctly ensures accessibility, maintainability, and proper functionality while leveraging framework benefits like automatic locale handling."
+  },
+  {
+    "ruleId": "REACT-009",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Props Hygiene",
+    "context": {
+      "scope": "Component Props",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "empty prop values",
+        "unnecessary props"
+      ]
+    },
+    "pattern": {
+      "description": "Avoid passing empty or unnecessary props to components",
+      "codePatterns": [
+        "className=\"\"",
+        "style={{}}"
+      ],
+      "conditions": {
+        "hasEmptyPropValue": true
+      }
+    },
+    "recommendation": {
+      "action": "remove",
+      "description": "Remove props that have empty values",
+      "codeExamples": {
+        "before": "<TableCell className=\"\">",
+        "after": "<TableCell>"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-007",
+        "relationship": "complementary",
+        "description": "Clean DOM structure includes proper prop usage",
+        "relevance": "Unnecessary props add noise to component structure"
+      }
+    ],
+    "severity": "low",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Empty props add unnecessary noise to the code and can impact readability and maintenance. They should be removed to keep the code clean and efficient."
+  },
+  {
+    "ruleId": "REACT-010",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "JSX Syntax",
+    "context": {
+      "scope": "Component Markup",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "empty elements",
+        "fragments",
+        "jsx syntax"
+      ]
+    },
+    "pattern": {
+      "description": "Use proper JSX syntax patterns",
+      "codePatterns": [
+        "<.*></.*>",
+        "<>.*</>"
+      ],
+      "conditions": {
+        "hasNoChildren": true,
+        "isFragment": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use self-closing tags for empty elements and avoid unnecessary fragments",
+      "codeExamples": {
+        "emptyTags": {
+          "before": "<UiIcon></UiIcon>",
+          "after": "<UiIcon />"
+        },
+        "fragments": {
+          "before": "<><Currency value={value} /></>",
+          "after": "<Currency value={value} />"
+        }
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-007",
+        "relationship": "complementary",
+        "description": "Clean JSX syntax supports DOM structure",
+        "relevance": "Proper syntax improves code readability"
+      }
+    ],
+    "severity": "low",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Consistent JSX syntax patterns improve code readability and maintainability. Self-closing tags for empty elements are more concise, and unnecessary fragments add complexity without benefit."
+  },
+  {
+    "ruleId": "REACT-011",
+    "version": "1.0",
+    "category": "React",
+    "subCategory": "Code Readability",
+    "context": {
+      "scope": "Component Logic",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "complex conditions",
+        "inline calculations",
+        "nested expressions"
+      ]
+    },
+    "pattern": {
+      "description": "Extract complex inline logic into explicit variables",
+      "codePatterns": [
+        "\\{.*>=.*&&.*\\}",
+        "\\{[^}]{50,}\\}"
+      ],
+      "conditions": {
+        "hasComplexLogic": true,
+        "isInlineInJSX": true
+      }
+    },
+    "recommendation": {
+      "action": "extract",
+      "description": "Break down complex inline logic into named variables",
+      "codeExamples": {
+        "before": "{parseFloat(row.getValue('currentBidCents')) >= parseFloat(row.getValue('reservePriceCents')) && (",
+        "after": [
+          "const currentBid = parseFloat(row.getValue('currentBidCents'))",
+          "const reservePrice = parseFloat(row.getValue('reservePriceCents'))",
+          "const isReservePriceMet = currentBid >= reservePrice",
+          "{isReservePriceMet && ("
+        ]
+      },
+      "principles": [
+        "Use descriptive variable names",
+        "Extract complex calculations",
+        "Improve code readability",
+        "Make logic easier to debug"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-004",
+        "relationship": "complementary",
+        "description": "Clean component structure includes readable logic",
+        "relevance": "Explicit variables improve component clarity"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Complex inline logic makes code harder to read, understand, and maintain. Breaking it down into named variables improves readability and makes debugging easier."
+  },
+  {
+    "ruleId": "STYLE-001",
+    "version": "1.1",
+    "category": "Code Style",
+    "subCategory": "Naming Conventions",
+    "context": {
+      "scope": "Configuration Constants",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts",
+        "*.jsx",
+        "*.js"
+      ],
+      "triggers": [
+        "configuration objects",
+        "constant configuration values",
+        "shared settings objects"
+      ]
+    },
+    "pattern": {
+      "description": "Use UPPER_SNAKE_CASE for configuration/settings constant objects",
+      "codePatterns": [
+        "const\\s+[a-z][A-Za-z]*Config\\s*=",
+        "const\\s+[a-z][A-Za-z]*Settings\\s*=",
+        "const\\s+[a-z][A-Za-z]*Options\\s*="
+      ],
+      "conditions": {
+        "isConfigurationObject": true,
+        "isSharedConstant": true,
+        "examples": [
+          "API endpoints configuration",
+          "Feature flags",
+          "Application settings",
+          "Shared constant values used for configuration"
+        ],
+        "counterExamples": [
+          "Regular variables (const name = 'John')",
+          "Component constants (const Button = styled.button)",
+          "Destructured values (const { id } = user)",
+          "Function constants (const handleClick = () => {})"
+        ]
+      }
+    },
+    "recommendation": {
+      "action": "rename",
+      "description": "Use UPPER_SNAKE_CASE only for configuration constants and shared settings objects",
+      "codeExamples": {
+        "before": [
+          "const alertConfig = { type: 'warning', duration: 3000 }",
+          "const apiEndpoints = { users: '/api/users', auth: '/api/auth' }"
+        ],
+        "after": [
+          "const ALERT_CONFIG = { type: 'warning', duration: 3000 }",
+          "const API_ENDPOINTS = { users: '/api/users', auth: '/api/auth' }"
+        ],
+        "shouldNotChange": [
+          "const userName = 'John'",
+          "const handleSubmit = () => {}",
+          "const StyledButton = styled.button``",
+          "const { data } = useQuery()"
+        ]
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-005",
+        "relationship": "complementary",
+        "description": "Configuration naming aligns with variable naming conventions",
+        "relevance": "Consistent naming patterns across all code aspects"
+      },
+      {
+        "ruleId": "ARCH-001",
+        "relationship": "related",
+        "description": "Naming conventions support architectural clarity",
+        "relevance": "Clear names help maintain architectural boundaries"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Using UPPER_SNAKE_CASE for configuration constants makes them easily identifiable as shared, immutable configuration values, while regular constants should maintain camelCase for better readability."
+  },
+  {
+    "ruleId": "STYLE-002",
+    "version": "1.0",
+    "category": "Styling",
+    "subCategory": "CSS Units",
+    "context": {
+      "scope": "CSS Properties and Values",
+      "applicableFiles": [
+        "*.tsx",
+        "*.css",
+        "*.scss"
+      ],
+      "triggers": [
+        "size units",
+        "spacing values",
+        "font-size definitions"
+      ]
+    },
+    "pattern": {
+      "description": "Use appropriate CSS units for responsive design and accessibility",
+      "codePatterns": [
+        "[0-9]+px",
+        "min-h-\\[.*px\\]",
+        "text-\\[.*px\\]"
+      ],
+      "conditions": {
+        "isStyleDefinition": true,
+        "affectsLayout": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use relative units and modern spacing techniques",
+      "codeExamples": {
+        "units": {
+          "avoid": [
+            "min-h-[24px]",
+            "text-[16px]",
+            "mt-3"
+          ],
+          "prefer": [
+            "min-h-6",
+            "text-base",
+            "gap-3"
+          ]
+        }
+      },
+      "principles": [
+        "Use rem for font sizes and related dimensions",
+        "Prefer gap over margin for consistent spacing",
+        "Use design system scales instead of arbitrary values",
+        "Consider accessibility and user preferences"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-004",
+        "relationship": "complementary",
+        "description": "CSS units affect component flexibility and accessibility",
+        "relevance": "Proper units support responsive and accessible design"
+      },
+      {
+        "ruleId": "STYLE-003",
+        "relationship": "related",
+        "description": "Unit choices affect utility class patterns",
+        "relevance": "Consistent units in utility class usage"
+      },
+      {
+        "ruleId": "REACT-007",
+        "relationship": "dependent",
+        "description": "CSS units impact DOM structure effectiveness",
+        "relevance": "Units should support clean, semantic structure"
+      }
+    ],
+    "severity": "medium",
+    "rationale": "Using appropriate CSS units and modern spacing techniques ensures better accessibility, responsiveness, and maintainability."
+  },
+  {
+    "ruleId": "STYLE-003",
+    "version": "1.0",
+    "category": "Styling",
+    "subCategory": "Utility Classes",
+    "context": {
+      "scope": "CSS Utility Classes",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "className definitions",
+        "utility combinations",
+        "typography classes"
+      ]
+    },
+    "pattern": {
+      "description": "Use consistent, organized utility classes with helper abstractions",
+      "codePatterns": [
+        "className=\\{cn\\(",
+        "cva\\(",
+        "text-[a-z-]+"
+      ],
+      "conditions": {
+        "usesUtilityClasses": true,
+        "hasRepeatingPatterns": true
+      }
+    },
+    "recommendation": {
+      "action": "refactor",
+      "description": "Use typography helpers and consistent utility patterns",
+      "codeExamples": {
+        "typography": {
+          "avoid": "className={cn('text-sm leading-none body-body-s-default')}",
+          "prefer": "className={typography.bodySmall}"
+        },
+        "spacing": {
+          "avoid": [
+            "<ul className='space-y-3'>",
+            "  <li className='mt-3'>"
+          ],
+          "prefer": [
+            "<ul className='gap-3'>",
+            "  <li>"
+          ]
+        }
+      },
+      "principles": [
+        "Use typography helper classes for consistent text styling",
+        "Prefer modern CSS features over utility combinations",
+        "Create abstractions for commonly used patterns",
+        "Keep utility combinations DRY"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-002",
+        "relationship": "related",
+        "description": "Utility patterns should use consistent units",
+        "relevance": "Unit consistency in utility class combinations"
+      },
+      {
+        "ruleId": "REACT-007",
+        "relationship": "complementary",
+        "description": "Utility organization supports DOM structure",
+        "relevance": "Clean utility patterns enable semantic markup"
+      },
+      {
+        "ruleId": "STYLE-004",
+        "relationship": "related",
+        "description": "Utility patterns affect component flexibility",
+        "relevance": "Patterns should support accessible, responsive design"
+      }
+    ],
+    "severity": "medium",
+    "rationale": "Organized utility classes with proper abstractions improve maintainability and consistency while reducing duplication."
+  },
+  {
+    "ruleId": "STYLE-004",
+    "version": "1.0",
+    "category": "Styling",
+    "subCategory": "Accessibility",
+    "context": {
+      "scope": "Component Layout & Sizing",
+      "applicableFiles": [
+        "*.tsx",
+        "*.jsx"
+      ],
+      "triggers": [
+        "fixed height definitions",
+        "static sizing",
+        "height constraints"
+      ]
+    },
+    "pattern": {
+      "description": "Avoid fixed heights that could cause content overflow with different font sizes or zoom levels",
+      "codePatterns": [
+        "h-[0-9]+",
+        "height: [0-9]+",
+        "min-height: [0-9]+"
+      ],
+      "conditions": {
+        "containsText": true,
+        "usesStaticHeight": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Use min-height with padding or flex patterns that can accommodate varying content sizes",
+      "codeExamples": {
+        "before": "<div className='h-11 items-center'>Content</div>",
+        "after": "<div className='min-h-[2.75rem] py-2 flex items-center'>Content</div>"
+      },
+      "principles": [
+        "Prefer minimum heights over fixed heights",
+        "Use padding to control spacing",
+        "Allow content to determine container size",
+        "Consider font size changes and zoom levels"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "STYLE-003",
+        "relationship": "complementary",
+        "description": "When adjusting height constraints, consider utility class organization patterns for consistent spacing and layout",
+        "relevance": "Utility class combinations like 'min-h-[x] py-y flex items-center' should follow consistent patterns"
+      },
+      {
+        "ruleId": "REACT-007",
+        "relationship": "dependent",
+        "description": "Component structure affects how sizing constraints should be applied",
+        "relevance": "Height constraints should respect the semantic structure of the component and its content"
+      },
+      {
+        "ruleId": "REACT-003",
+        "relationship": "related",
+        "description": "Component layout flexibility relates to proper prop handling",
+        "relevance": "Consider making height/sizing configurable through props when appropriate"
+      }
+    ],
+    "severity": "high",
+    "rationale": "Fixed heights can break layouts when users change font sizes or zoom levels, affecting accessibility. Components should be flexible enough to accommodate varying content sizes."
+  },
+  {
+    "ruleId": "TEST-001",
+    "version": "1.0",
+    "category": "Code Quality",
+    "subCategory": "Code Cleanliness",
+    "context": {
+      "scope": "Production Code",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts",
+        "*.jsx",
+        "*.js"
+      ],
+      "triggers": [
+        "test code",
+        "debugging code"
+      ]
+    },
+    "pattern": {
+      "description": "Remove test and debugging code from production files",
+      "codePatterns": [
+        "console\\.log",
+        "debugger",
+        "TODO",
+        "test\\(",
+        "it\\(",
+        "describe\\("
+      ],
+      "conditions": {
+        "isProductionCode": true,
+        "isNotTestFile": true
+      }
+    },
+    "recommendation": {
+      "action": "remove",
+      "description": "Remove all test and debugging code from production files",
+      "codeExamples": {
+        "before": "console.log('debug');\nfunction process() { /* ... */ }",
+        "after": "function process() { /* ... */ }"
+      }
+    },
+    "severity": "high",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Production code should be clean and free of debugging and test code to ensure performance and maintainability."
+  },
+  {
+    "ruleId": "TS-001",
+    "version": "1.0",
+    "category": "TypeScript",
+    "subCategory": "Type Safety",
+    "context": {
+      "scope": "Type Assertions",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "type casting",
+        "type assertions"
+      ]
+    },
+    "pattern": {
+      "description": "Avoid unnecessary type casting when the type is already inferred correctly",
+      "codePatterns": [
+        "(?:as|<)\\s*[A-Z][A-Za-z]*\\s*>",
+        "as\\s+[A-Z][A-Za-z]*"
+      ],
+      "conditions": {
+        "typeIsAlreadyInferred": true,
+        "noTypeConflict": true
+      }
+    },
+    "recommendation": {
+      "action": "remove",
+      "description": "Remove redundant type assertions when TypeScript can infer the type correctly",
+      "codeExamples": {
+        "before": "const [error, setError] = useState<string | undefined>()",
+        "after": "const [error, setError] = useState()"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "REACT-002",
+        "relationship": "complementary",
+        "description": "Type assertions affect props type safety",
+        "relevance": "Clean type usage ensures prop type safety"
+      },
+      {
+        "ruleId": "TS-002",
+        "relationship": "related",
+        "description": "Type assertions relate to type definitions",
+        "relevance": "Consistent type usage across definitions"
+      },
+      {
+        "ruleId": "REACT-006",
+        "relationship": "dependent",
+        "description": "Type safety crucial for advanced patterns",
+        "relevance": "Complex patterns require careful typing"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Unnecessary type assertions can hide potential type errors and make the code harder to maintain. TypeScript's type inference is usually sufficient."
+  },
+  {
+    "ruleId": "TS-002",
+    "version": "1.0",
+    "category": "TypeScript",
+    "subCategory": "Type Definitions",
+    "context": {
+      "scope": "Type Definitions",
+      "applicableFiles": [
+        "*.tsx",
+        "*.ts"
+      ],
+      "triggers": [
+        "Record usage",
+        "object type definitions"
+      ]
+    },
+    "pattern": {
+      "description": "Use type aliases for Record types to improve code clarity and reusability",
+      "codePatterns": [
+        "Record<",
+        "{ [key: string]:"
+      ],
+      "conditions": {
+        "isInlineRecord": true,
+        "isReused": true
+      }
+    },
+    "recommendation": {
+      "action": "extract",
+      "description": "Extract Record types into named type aliases",
+      "codeExamples": {
+        "before": "function process(data: Record<string, number>) {",
+        "after": "type DataRecord = Record<string, number>;\nfunction process(data: DataRecord) {"
+      }
+    },
+    "relatedRules": [
+      {
+        "ruleId": "TS-001",
+        "relationship": "complementary",
+        "description": "Type definitions support type safety",
+        "relevance": "Clear definitions enable proper type assertions"
+      },
+      {
+        "ruleId": "REACT-002",
+        "relationship": "related",
+        "description": "Type definitions affect props interfaces",
+        "relevance": "Reusable types support clear prop definitions"
+      },
+      {
+        "ruleId": "ARCH-001",
+        "relationship": "dependent",
+        "description": "Type organization affects architecture",
+        "relevance": "Type definitions support component organization"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-27",
+      "lastModified": "2024-03-27",
+      "implementationStatus": "active"
+    },
+    "rationale": "Named types improve code readability, enable reuse, and make type errors more understandable."
+  },
+  {
+    "ruleId": "TS-003",
+    "version": "1.0",
+    "category": "TypeScript",
+    "subCategory": "Schema Validation",
+    "context": {
+      "scope": "Validation Messages",
+      "applicableFiles": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "triggers": [
+        "zod schema definitions",
+        "validation messages",
+        "error messages"
+      ]
+    },
+    "pattern": {
+      "description": "Schema validation messages should be user-facing ready",
+      "codePatterns": [
+        "message:\\s*'[a-z]",
+        "\\.message\\s*=\\s*'[a-z]",
+        "\\{\\s*message:\\s*'[a-z]"
+      ],
+      "conditions": {
+        "isValidationMessage": true,
+        "isUserFacing": true
+      }
+    },
+    "recommendation": {
+      "action": "modify",
+      "description": "Format validation messages for end-users with proper capitalization and clarity",
+      "codeExamples": {
+        "before": "message: 'companyName must be at least 2 characters.'",
+        "after": "message: 'Company name must be at least 2 characters.'"
+      },
+      "principles": [
+        "Start messages with capital letters",
+        "Use human-readable field names",
+        "Maintain proper punctuation",
+        "Consider internationalization needs"
+      ]
+    },
+    "relatedRules": [
+      {
+        "ruleId": "DEP-002",
+        "relationship": "complementary",
+        "description": "Validation messages should use framework i18n capabilities",
+        "relevance": "Consistent message handling across the application"
+      },
+      {
+        "ruleId": "REACT-002",
+        "relationship": "related",
+        "description": "Form validation messages affect component props design",
+        "relevance": "Messages should be properly passed through component hierarchy"
+      }
+    ],
+    "severity": "medium",
+    "metadata": {
+      "created": "2024-03-28",
+      "lastModified": "2024-03-28",
+      "implementationStatus": "active"
+    },
+    "rationale": "Validation messages are directly shown to users and should therefore be properly formatted and easily understandable. This also prepares them for future internationalization needs."
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "ruleId": "ARCH-002",
+  "version": "1.0",
+  "category": "Architecture",
+  "subCategory": "Code Organization",
+  "context": {
+    "scope": "Shared Utilities",
+    "applicableFiles": [
+      "*.ts",
+      "*.tsx"
+    ],
+    "triggers": [
+      "utility imports",
+      "shared functionality"
+    ]
+  },
+  "pattern": {
+    "description": "Shared utilities should be placed in designated shared folders",
+    "codePatterns": [
+      "import.*from '\\.\\./\\.\\./\\.\\./'"
+    ],
+    "conditions": {
+      "isUtilityFunction": true,
+      "isUsedInMultiplePlaces": true
+    }
+  },
+  "recommendation": {
+    "action": "move",
+    "description": "Move shared utilities to the shared folder structure",
+    "codeExamples": {
+      "before": "import { formatCurrency } from '../../../pages/sales-report/utils'",
+      "after": "import { formatCurrency } from '@/shared/utils/currency'"
+    },
+    "principles": [
+      "Keep shared utilities in a central location",
+      "Avoid deep relative imports",
+      "Make shared code easily discoverable"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "ARCH-001",
+      "relationship": "complementary",
+      "description": "Code organization supports overall architecture",
+      "relevance": "Proper utility placement improves maintainability"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Centralized shared utilities improve maintainability, prevent code duplication, and make the codebase more organized. Deep relative imports make code harder to refactor and maintain."
+}

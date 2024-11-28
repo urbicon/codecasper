@@ -1,0 +1,77 @@
+{
+  "ruleId": "REACT-004",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Component Declaration",
+  "context": {
+    "scope": "React Function Components",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "component definition",
+      "export declarations",
+      "props destructuring"
+    ]
+  },
+  "pattern": {
+    "description": "React components should be declared as named functions with consistent props handling",
+    "codePatterns": [
+      "const\\s+[A-Z][A-Za-z]*\\s*=\\s*\\(",
+      "\\.\\.\\.[a-z]+\\s*}:.*Props\\)",
+      "props\\.[a-zA-Z]+"
+    ],
+    "conditions": {
+      "isReactComponent": true,
+      "hasPropsInterface": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use explicit function declarations with direct props destructuring",
+    "codeExamples": {
+      "before": [
+        "const PageTitle = ({ title, ...props }: PageTitleProps) => {",
+        "return <h1 className={`${props.className}`}>{title}</h1>"
+      ],
+      "after": [
+        "export function PageTitle({ title, className }: PageTitleProps) {",
+        "return <h1 className={className}>{title}</h1>"
+      ]
+    },
+    "principles": [
+      "Use `function` declaration instead of variable assignment",
+      "Destructure all used props directly in the parameters",
+      "Avoid spreading props when specific props are known",
+      "Export the function directly rather than the variable"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-001",
+      "relationship": "related",
+      "description": "Component declaration affects import patterns",
+      "relevance": "Declaration style influences import structure"
+    },
+    {
+      "ruleId": "REACT-002",
+      "relationship": "complementary",
+      "description": "Component declaration includes props handling",
+      "relevance": "Clear declaration supports clear props structure"
+    },
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "related",
+      "description": "Declaration style affects server/client split",
+      "relevance": "Consider framework context in component structure"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Consistent component declarations improve code readability, maintainability, and type safety. Using function declarations over arrow functions provides better error stack traces and debugging experience. Direct props destructuring makes component interfaces explicit and prevents prop drilling. Avoiding unnecessary spreads and using proper exports helps with tree-shaking and bundle optimization."
+}

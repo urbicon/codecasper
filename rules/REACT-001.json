@@ -1,0 +1,58 @@
+{
+  "ruleId": "REACT-001",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Imports",
+  "context": {
+    "scope": "React Hooks",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "useState import",
+      "React hooks import"
+    ]
+  },
+  "pattern": {
+    "description": "React hooks should be imported at the top level from 'react'",
+    "codePatterns": [
+      "useState(?!.*from 'react')",
+      "useEffect(?!.*from 'react')",
+      "useMemo(?!.*from 'react')"
+    ],
+    "conditions": {
+      "isReactComponent": true,
+      "usesHooks": true
+    }
+  },
+  "recommendation": {
+    "action": "move",
+    "description": "Import all React hooks at the top of the file directly from 'react'",
+    "codeExamples": {
+      "before": "const { useState } = React;",
+      "after": "import { useState } from 'react';"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "ARCH-001",
+      "relationship": "complementary",
+      "description": "Import patterns support component organization",
+      "relevance": "Consistent imports contribute to maintainable architecture"
+    },
+    {
+      "ruleId": "REACT-004",
+      "relationship": "related",
+      "description": "Import style affects component declarations",
+      "relevance": "Consistent imports support clear component structure"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Consistent import patterns improve code readability and maintainability."
+}

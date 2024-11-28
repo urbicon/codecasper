@@ -1,0 +1,86 @@
+{
+  "ruleId": "ARCH-001",
+  "version": "1.0",
+  "category": "Architecture",
+  "subCategory": "Component Design",
+  "context": {
+    "scope": "Component Organization and Structure",
+    "applicableFiles": ["*.tsx", "*.jsx"],
+    "triggers": [
+      "component organization",
+      "component props",
+      "UI libraries usage"
+    ]
+  },
+  "pattern": {
+    "description": "Structure components and their organization following consistent patterns",
+    "codePatterns": [
+      "className=\\{className\\}",
+      "export.*function.*Container",
+      "<Card.*>"
+    ],
+    "conditions": {
+      "isUIComponent": true,
+      "hasSharedProps": true
+    }
+  },
+  "recommendation": {
+    "action": "restructure",
+    "description": "Follow consistent component organization patterns",
+    "codeExamples": {
+      "containerComponents": {
+        "before": [
+          "<div className='space-y-6'>",
+          "  <Container>{children}</Container>",
+          "</div>"
+        ],
+        "after": [
+          "<Container className='space-y-6'>",
+          "  {children}",
+          "</Container>"
+        ]
+      },
+      "libraryUsage": {
+        "explanation": "Use shadcn/ui components as base, extend with specific implementations",
+        "example": [
+          "// ui/card.tsx - Base component",
+          "export { Card } from '@/components/ui/card'",
+          "",
+          "// features/dashboard/components/DashboardCard.tsx - Specific implementation",
+          "import { Card } from '@/components/ui/card'",
+          "export function DashboardCard({ children }) {",
+          "  return <Card className='dashboard-specific-styles'>{children}</Card>",
+          "}"
+        ]
+      }
+    },
+    "principles": [
+      "Keep base UI components generic and extensible",
+      "Place specific implementations close to their usage",
+      "Allow for composition through props",
+      "Minimize wrapper divs through proper prop handling"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-001",
+      "relationship": "complementary",
+      "description": "Component organization patterns should follow consistent import patterns",
+      "relevance": "Import structure supports the overall component architecture"
+    },
+    {
+      "ruleId": "REACT-004",
+      "relationship": "dependent",
+      "description": "Component declaration style affects the overall architecture",
+      "relevance": "Consistent component structure is key to maintainable architecture"
+    },
+    {
+      "ruleId": "STYLE-003",
+      "relationship": "related",
+      "description": "Utility organization affects component structure",
+      "relevance": "Consistent styling patterns support architectural goals"
+    }
+  ],
+  "severity": "medium",
+  "rationale": "Consistent component architecture improves maintainability, reusability, and reduces redundancy."
+}

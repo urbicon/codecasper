@@ -1,0 +1,65 @@
+{
+  "ruleId": "TS-003",
+  "version": "1.0",
+  "category": "TypeScript",
+  "subCategory": "Schema Validation",
+  "context": {
+    "scope": "Validation Messages",
+    "applicableFiles": [
+      "*.ts",
+      "*.tsx"
+    ],
+    "triggers": [
+      "zod schema definitions",
+      "validation messages",
+      "error messages"
+    ]
+  },
+  "pattern": {
+    "description": "Schema validation messages should be user-facing ready",
+    "codePatterns": [
+      "message:\\s*'[a-z]",
+      "\\.message\\s*=\\s*'[a-z]",
+      "\\{\\s*message:\\s*'[a-z]"
+    ],
+    "conditions": {
+      "isValidationMessage": true,
+      "isUserFacing": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Format validation messages for end-users with proper capitalization and clarity",
+    "codeExamples": {
+      "before": "message: 'companyName must be at least 2 characters.'",
+      "after": "message: 'Company name must be at least 2 characters.'"
+    },
+    "principles": [
+      "Start messages with capital letters",
+      "Use human-readable field names",
+      "Maintain proper punctuation",
+      "Consider internationalization needs"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "DEP-002",
+      "relationship": "complementary",
+      "description": "Validation messages should use framework i18n capabilities",
+      "relevance": "Consistent message handling across the application"
+    },
+    {
+      "ruleId": "REACT-002",
+      "relationship": "related",
+      "description": "Form validation messages affect component props design",
+      "relevance": "Messages should be properly passed through component hierarchy"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Validation messages are directly shown to users and should therefore be properly formatted and easily understandable. This also prepares them for future internationalization needs."
+}

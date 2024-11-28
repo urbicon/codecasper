@@ -1,0 +1,99 @@
+{
+  "ruleId": "ARCH-003",
+  "version": "1.0",
+  "category": "Architecture",
+  "subCategory": "Import Structure",
+  "context": {
+    "scope": "Library Structure and Imports",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts",
+      "tsconfig.json"
+    ],
+    "triggers": [
+      "library imports",
+      "import paths",
+      "library structure",
+      "nx library generation",
+      "library setup"
+    ]
+  },
+  "pattern": {
+    "description": "Library imports should follow consistent naming and path conventions",
+    "codePatterns": [
+      "@[a-z-]+/ui-[a-z-]+",
+      "@[a-z-]+/ui/[a-z-]+",
+      "\"@tba-fe-seller-portal/ui-",
+      "from '\\.\\./\\.\\./ui-"
+    ],
+    "conditions": {
+      "isLibraryImport": true,
+      "hasInconsistentImports": true,
+      "examples": [
+        "import { Card } from '@tba-fe-seller-portal/ui-card'  // Falsch",
+        "import { Alert } from '@tba-fe-seller-portal/ui/alert'  // Richtig"
+      ]
+    }
+  },
+  "recommendation": {
+    "action": "standardize",
+    "description": "Use consistent import paths and library structure following NX patterns",
+    "codeExamples": {
+      "importPaths": {
+        "before": [
+          "import { Card } from '@tba-fe-seller-portal/ui-card'",
+          "import { Button } from '@tba-fe-seller-portal/ui/button'"
+        ],
+        "after": [
+          "import { Card } from '@tba-fe-seller-portal/ui/card'",
+          "import { Button } from '@tba-fe-seller-portal/ui/button'"
+        ]
+      },
+      "libraryName": {
+        "explanation": "Use namespace-prefixed names for libraries",
+        "before": "name: page-container",
+        "after": "name: ui-page-container"
+      },
+      "libraryGeneration": {
+        "explanation": "Generate libraries using the NX CLI or Console",
+        "example": [
+          "nx g @nx/next:library",
+          "  --directory=libs/ui/page-container",
+          "  --name=ui-page-container",
+          "  --importPath=@tba-fe-seller-portal/ui/page-container",
+          "  --style=none",
+          "  --unitTestRunner=none"
+        ]
+      },
+      "cleanup": {
+        "explanation": "Remove boilerplate after generation",
+        "steps": [
+          "1. Delete src/server.ts and src/lib/hello-server.ts",
+          "2. Remove /server paths from tsconfig.base.json"
+        ]
+      }
+    },
+    "principles": [
+      "Use consistent import paths across all libraries",
+      "Follow the established folder structure",
+      "Maintain clear namespace separation",
+      "Keep library names in kebab-case"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "ARCH-004",
+      "relationship": "dependent",
+      "description": "Project structure defines where imports should come from",
+      "relevance": "Proper folder structure enables correct imports"
+    },
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "related",
+      "description": "Server/Client component decisions affect import patterns",
+      "relevance": "Different import patterns for server and client components"
+    }
+  ],
+  "severity": "high",
+  "rationale": "Consistent import paths and library structure improve maintainability, reduce confusion, and ensure proper code organization in the monorepo. This is especially important for large teams working on shared codebases."
+}

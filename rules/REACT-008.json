@@ -1,0 +1,84 @@
+{
+  "ruleId": "REACT-008",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Semantics and Integration",
+  "context": {
+    "scope": "HTML Semantics and Framework Features",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "HTML element choice",
+      "framework imports",
+      "accessibility attributes"
+    ]
+  },
+  "pattern": {
+    "description": "Use semantic HTML and framework-provided components appropriately",
+    "codePatterns": [
+      "import.*from 'next/link'",
+      "disabled=",
+      "aria-"
+    ],
+    "conditions": {
+      "isNavigationElement": true,
+      "hasAccessibilityConsiderations": true,
+      "usesFrameworkFeatures": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use framework components and semantic HTML elements correctly",
+    "codeExamples": {
+      "semantics": {
+        "incorrect": "const NavButton = ({ disabled }) => <Link disabled={disabled}>",
+        "correct": "const NavButton = ({ disabled }) => disabled ? <span> : <Link>"
+      },
+      "frameworks": {
+        "incorrect": "import Link from 'next/link'",
+        "correct": "import Link from '@i18n/Link'"
+      }
+    },
+    "principles": [
+      "Use semantic HTML elements appropriately",
+      "Prefer framework-provided components for enhanced functionality",
+      "Consider accessibility implications of element choices",
+      "Use framework features for internationalization"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "dependent",
+      "description": "Framework features affect semantic choices",
+      "relevance": "Use framework-specific components appropriately"
+    },
+    {
+      "ruleId": "REACT-007",
+      "relationship": "complementary",
+      "description": "Semantics relate to DOM structure",
+      "relevance": "Semantic HTML supports clean component structure"
+    },
+    {
+      "ruleId": "DEP-002",
+      "relationship": "related",
+      "description": "Framework integration affects library choices",
+      "relevance": "Prefer framework-provided semantic elements"
+    },
+    {
+      "ruleId": "STYLE-004",
+      "relationship": "related",
+      "description": "Semantic structure supports accessibility",
+      "relevance": "Proper semantics are crucial for accessibility"
+    }
+  ],
+  "severity": "high",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Using semantic HTML and framework features correctly ensures accessibility, maintainability, and proper functionality while leveraging framework benefits like automatic locale handling."
+}

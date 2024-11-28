@@ -1,0 +1,58 @@
+{
+  "ruleId": "REACT-003",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Component Design",
+  "context": {
+    "scope": "Component Layout",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "width definition",
+      "size constraints"
+    ]
+  },
+  "pattern": {
+    "description": "Components should be flexible and get their layout constraints from parent components",
+    "codePatterns": [
+      "w-[0-9]+",
+      "width: [0-9]+",
+      "maxWidth: [0-9]+"
+    ],
+    "conditions": {
+      "isLayoutConstraint": true,
+      "isHardcoded": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Remove hardcoded widths and let the parent component control the layout",
+    "codeExamples": {
+      "before": "<div className='w-96'>",
+      "after": "<div className='w-full'>"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-003",
+      "relationship": "complementary",
+      "description": "Layout constraints relate to utility class usage",
+      "relevance": "Consistent layout patterns through utility classes"
+    },
+    {
+      "ruleId": "STYLE-004",
+      "relationship": "dependent",
+      "description": "Component sizing affects accessibility",
+      "relevance": "Layout constraints must consider accessibility"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Components should be reusable and flexible. Layout constraints should be controlled by parent components to ensure better reusability and responsiveness."
+}

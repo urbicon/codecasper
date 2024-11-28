@@ -1,0 +1,56 @@
+{
+  "ruleId": "DEP-001",
+  "version": "1.0",
+  "category": "Dependencies",
+  "subCategory": "Version Management",
+  "context": {
+    "scope": "Package Dependencies",
+    "applicableFiles": [
+      "package.json"
+    ],
+    "triggers": [
+      "dependency version specifications"
+    ]
+  },
+  "pattern": {
+    "description": "Dependencies should use exact versions instead of ranges",
+    "codePatterns": [
+      "\"^[0-9]\"",
+      "\"~[0-9]\"",
+      "\">=[0-9]\""
+    ],
+    "conditions": {
+      "isInPackageJson": true,
+      "isDependencyVersion": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use exact versions for all dependencies to ensure consistency",
+    "codeExamples": {
+      "before": "\"@radix-ui/react-checkbox\": \"^1.1.2\"",
+      "after": "\"@radix-ui/react-checkbox\": \"1.1.2\""
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "DEP-002",
+      "relationship": "complementary",
+      "description": "Version management relates to library selection decisions",
+      "relevance": "Both rules ensure consistent and maintainable dependencies"
+    },
+    {
+      "ruleId": "TEST-001",
+      "relationship": "related",
+      "description": "Clean dependencies contribute to clean production code",
+      "relevance": "Both focus on maintaining clean, production-ready code"
+    }
+  ],
+  "severity": "high",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Using exact versions prevents unexpected updates and ensures consistent behavior across all installations."
+}

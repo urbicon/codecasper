@@ -1,0 +1,63 @@
+{
+  "ruleId": "REACT-011",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Code Readability",
+  "context": {
+    "scope": "Component Logic",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "complex conditions",
+      "inline calculations",
+      "nested expressions"
+    ]
+  },
+  "pattern": {
+    "description": "Extract complex inline logic into explicit variables",
+    "codePatterns": [
+      "\\{.*>=.*&&.*\\}",
+      "\\{[^}]{50,}\\}"
+    ],
+    "conditions": {
+      "hasComplexLogic": true,
+      "isInlineInJSX": true
+    }
+  },
+  "recommendation": {
+    "action": "extract",
+    "description": "Break down complex inline logic into named variables",
+    "codeExamples": {
+      "before": "{parseFloat(row.getValue('currentBidCents')) >= parseFloat(row.getValue('reservePriceCents')) && (",
+      "after": [
+        "const currentBid = parseFloat(row.getValue('currentBidCents'))",
+        "const reservePrice = parseFloat(row.getValue('reservePriceCents'))",
+        "const isReservePriceMet = currentBid >= reservePrice",
+        "{isReservePriceMet && ("
+      ]
+    },
+    "principles": [
+      "Use descriptive variable names",
+      "Extract complex calculations",
+      "Improve code readability",
+      "Make logic easier to debug"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-004",
+      "relationship": "complementary",
+      "description": "Clean component structure includes readable logic",
+      "relevance": "Explicit variables improve component clarity"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-28",
+    "lastModified": "2024-03-28",
+    "implementationStatus": "active"
+  },
+  "rationale": "Complex inline logic makes code harder to read, understand, and maintain. Breaking it down into named variables improves readability and makes debugging easier."
+}

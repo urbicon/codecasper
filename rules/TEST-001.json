@@ -1,0 +1,49 @@
+{
+  "ruleId": "TEST-001",
+  "version": "1.0",
+  "category": "Code Quality",
+  "subCategory": "Code Cleanliness",
+  "context": {
+    "scope": "Production Code",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts",
+      "*.jsx",
+      "*.js"
+    ],
+    "triggers": [
+      "test code",
+      "debugging code"
+    ]
+  },
+  "pattern": {
+    "description": "Remove test and debugging code from production files",
+    "codePatterns": [
+      "console\\.log",
+      "debugger",
+      "TODO",
+      "test\\(",
+      "it\\(",
+      "describe\\("
+    ],
+    "conditions": {
+      "isProductionCode": true,
+      "isNotTestFile": true
+    }
+  },
+  "recommendation": {
+    "action": "remove",
+    "description": "Remove all test and debugging code from production files",
+    "codeExamples": {
+      "before": "console.log('debug');\nfunction process() { /* ... */ }",
+      "after": "function process() { /* ... */ }"
+    }
+  },
+  "severity": "high",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Production code should be clean and free of debugging and test code to ensure performance and maintainability."
+}

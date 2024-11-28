@@ -1,0 +1,82 @@
+{
+  "ruleId": "NEXT-001",
+  "version": "1.0",
+  "category": "Framework",
+  "subCategory": "Next.js",
+  "context": {
+    "scope": "Server Components and Actions",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "'use server' directive",
+      "async functions",
+      "server actions"
+    ]
+  },
+  "pattern": {
+    "description": "Use Next.js server features appropriately",
+    "codePatterns": [
+      "'use server'",
+      "async function",
+      "export async function"
+    ],
+    "conditions": {
+      "isServerAction": true,
+      "isAsyncFunction": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Only use server directives when explicitly needed",
+    "codeExamples": {
+      "unnecessary": {
+        "before": [
+          "'use server'",
+          "export async function PageComponent() {",
+          "  return <div>Content</div>",
+          "}"
+        ],
+        "explanation": "Async components are server components by default"
+      },
+      "necessary": {
+        "example": [
+          "'use server'",
+          "export async function submitForm(data: FormData) {",
+          "  // Server-side form processing",
+          "}"
+        ],
+        "explanation": "Use 'use server' for explicit server actions"
+      }
+    },
+    "principles": [
+      "Async functions are server components by default",
+      "Use 'use server' only for explicit server actions",
+      "Keep server/client separation clear",
+      "Follow Next.js server component patterns"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "NEXT-002",
+      "relationship": "complementary",
+      "description": "Server/Client component decisions affect server features usage",
+      "relevance": "Both rules guide proper use of Next.js features"
+    },
+    {
+      "ruleId": "DEP-002",
+      "relationship": "complementary",
+      "description": "Framework features influence library choices",
+      "relevance": "Use framework features instead of external libraries when possible"
+    },
+    {
+      "ruleId": "REACT-006",
+      "relationship": "related",
+      "description": "Advanced React patterns interact with Next.js features",
+      "relevance": "Consider framework context when using advanced React patterns"
+    }
+  ],
+  "severity": "medium",
+  "rationale": "Proper use of Next.js server features ensures optimal performance and correct server/client separation."
+}

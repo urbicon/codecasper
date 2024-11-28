@@ -1,0 +1,72 @@
+{
+  "ruleId": "REACT-005",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Naming Conventions",
+  "context": {
+    "scope": "React Component Variables",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "variable naming",
+      "state naming",
+      "flag naming"
+    ]
+  },
+  "pattern": {
+    "description": "Use clear, contextually appropriate names for variables in React components",
+    "codePatterns": [
+      "is[A-Z][a-zA-Z]*",
+      "has[A-Z][a-zA-Z]*",
+      "should[A-Z][a-zA-Z]*"
+    ],
+    "conditions": {
+      "isBoolean": true,
+      "isComponentState": true
+    }
+  },
+  "recommendation": {
+    "action": "rename",
+    "description": "Use names that accurately describe the variable's purpose in the component's context",
+    "codeExamples": {
+      "before": "const isActive = pathname === href",
+      "after": "const isCurrentPath = pathname === href",
+      "explanation": "isCurrentPath better describes what the variable actually represents - it's not about an active state but about path matching"
+    },
+    "principles": [
+      "Names should reflect the actual purpose or meaning",
+      "Avoid misleading names that imply different functionality",
+      "Consider the component's context when choosing names",
+      "Be specific rather than generic"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-001",
+      "relationship": "complementary",
+      "description": "Naming conventions apply to both variables and configuration",
+      "relevance": "Consistent naming improves code clarity across all aspects"
+    },
+    {
+      "ruleId": "TS-001",
+      "relationship": "related",
+      "description": "Clear variable naming supports type safety",
+      "relevance": "Well-named variables make type usage more intuitive"
+    },
+    {
+      "ruleId": "REACT-002",
+      "relationship": "related",
+      "description": "Variable naming affects props clarity",
+      "relevance": "Clear variable names support clear prop interfaces"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Clear and contextually appropriate naming improves code readability and maintainability by accurately representing the variable's purpose and avoiding confusion with similar but different concepts."
+}

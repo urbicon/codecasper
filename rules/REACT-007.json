@@ -1,0 +1,80 @@
+{
+  "ruleId": "REACT-007",
+  "version": "1.0",
+  "category": "React",
+  "subCategory": "Component Structure",
+  "context": {
+    "scope": "Component DOM Structure",
+    "applicableFiles": [
+      "*.tsx",
+      "*.jsx"
+    ],
+    "triggers": [
+      "nested elements",
+      "styling location",
+      "event handling"
+    ]
+  },
+  "pattern": {
+    "description": "Structure components to maintain proper DOM hierarchy and event handling",
+    "codePatterns": [
+      "<div>.*<Link",
+      "style=\\{.*\\}",
+      "className=\\{.*\\}"
+    ],
+    "conditions": {
+      "hasNestedInteractiveElements": true,
+      "hasCustomStyling": true
+    }
+  },
+  "recommendation": {
+    "action": "restructure",
+    "description": "Keep styling and interactive elements at the appropriate DOM level",
+    "codeExamples": {
+      "before": [
+        "<Link>",
+        "  <div className='styled-element'>Content</div>",
+        "</Link>"
+      ],
+      "after": [
+        "<Link className='styled-element'>",
+        "  Content",
+        "</Link>"
+      ],
+      "explanation": "Style the Link directly instead of wrapping content in styled divs"
+    },
+    "principles": [
+      "Style the most semantic element",
+      "Avoid unnecessary DOM nesting",
+      "Keep event handlers on interactive elements",
+      "Maintain clean event bubbling chains"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "STYLE-003",
+      "relationship": "complementary",
+      "description": "DOM structure affects utility class organization",
+      "relevance": "Clean DOM structure enables efficient styling patterns"
+    },
+    {
+      "ruleId": "STYLE-004",
+      "relationship": "dependent",
+      "description": "DOM structure impacts accessibility considerations",
+      "relevance": "Proper structure is crucial for accessibility"
+    },
+    {
+      "ruleId": "REACT-002",
+      "relationship": "related",
+      "description": "Component props should support clean DOM structure",
+      "relevance": "Props design should enable semantic markup"
+    }
+  ],
+  "severity": "high",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Proper component structure ensures correct event handling, maintains accessibility, and simplifies styling maintenance."
+}

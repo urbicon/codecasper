@@ -1,0 +1,63 @@
+{
+  "ruleId": "TS-002",
+  "version": "1.0",
+  "category": "TypeScript",
+  "subCategory": "Type Definitions",
+  "context": {
+    "scope": "Type Definitions",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "Record usage",
+      "object type definitions"
+    ]
+  },
+  "pattern": {
+    "description": "Use type aliases for Record types to improve code clarity and reusability",
+    "codePatterns": [
+      "Record<",
+      "{ [key: string]:"
+    ],
+    "conditions": {
+      "isInlineRecord": true,
+      "isReused": true
+    }
+  },
+  "recommendation": {
+    "action": "extract",
+    "description": "Extract Record types into named type aliases",
+    "codeExamples": {
+      "before": "function process(data: Record<string, number>) {",
+      "after": "type DataRecord = Record<string, number>;\nfunction process(data: DataRecord) {"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "TS-001",
+      "relationship": "complementary",
+      "description": "Type definitions support type safety",
+      "relevance": "Clear definitions enable proper type assertions"
+    },
+    {
+      "ruleId": "REACT-002",
+      "relationship": "related",
+      "description": "Type definitions affect props interfaces",
+      "relevance": "Reusable types support clear prop definitions"
+    },
+    {
+      "ruleId": "ARCH-001",
+      "relationship": "dependent",
+      "description": "Type organization affects architecture",
+      "relevance": "Type definitions support component organization"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Named types improve code readability, enable reuse, and make type errors more understandable."
+}

@@ -1,0 +1,85 @@
+{
+  "ruleId": "STYLE-001",
+  "version": "1.1",
+  "category": "Code Style",
+  "subCategory": "Naming Conventions",
+  "context": {
+    "scope": "Configuration Constants",
+    "applicableFiles": [
+      "*.tsx",
+      "*.ts",
+      "*.jsx",
+      "*.js"
+    ],
+    "triggers": [
+      "configuration objects",
+      "constant configuration values",
+      "shared settings objects"
+    ]
+  },
+  "pattern": {
+    "description": "Use UPPER_SNAKE_CASE for configuration/settings constant objects",
+    "codePatterns": [
+      "const\\s+[a-z][A-Za-z]*Config\\s*=",
+      "const\\s+[a-z][A-Za-z]*Settings\\s*=",
+      "const\\s+[a-z][A-Za-z]*Options\\s*="
+    ],
+    "conditions": {
+      "isConfigurationObject": true,
+      "isSharedConstant": true,
+      "examples": [
+        "API endpoints configuration",
+        "Feature flags",
+        "Application settings",
+        "Shared constant values used for configuration"
+      ],
+      "counterExamples": [
+        "Regular variables (const name = 'John')",
+        "Component constants (const Button = styled.button)",
+        "Destructured values (const { id } = user)",
+        "Function constants (const handleClick = () => {})"
+      ]
+    }
+  },
+  "recommendation": {
+    "action": "rename",
+    "description": "Use UPPER_SNAKE_CASE only for configuration constants and shared settings objects",
+    "codeExamples": {
+      "before": [
+        "const alertConfig = { type: 'warning', duration: 3000 }",
+        "const apiEndpoints = { users: '/api/users', auth: '/api/auth' }"
+      ],
+      "after": [
+        "const ALERT_CONFIG = { type: 'warning', duration: 3000 }",
+        "const API_ENDPOINTS = { users: '/api/users', auth: '/api/auth' }"
+      ],
+      "shouldNotChange": [
+        "const userName = 'John'",
+        "const handleSubmit = () => {}",
+        "const StyledButton = styled.button``",
+        "const { data } = useQuery()"
+      ]
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "REACT-005",
+      "relationship": "complementary",
+      "description": "Configuration naming aligns with variable naming conventions",
+      "relevance": "Consistent naming patterns across all code aspects"
+    },
+    {
+      "ruleId": "ARCH-001",
+      "relationship": "related",
+      "description": "Naming conventions support architectural clarity",
+      "relevance": "Clear names help maintain architectural boundaries"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Using UPPER_SNAKE_CASE for configuration constants makes them easily identifiable as shared, immutable configuration values, while regular constants should maintain camelCase for better readability."
+}

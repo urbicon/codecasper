@@ -1,0 +1,58 @@
+{
+  "ruleId": "DEP-002",
+  "version": "1.0",
+  "category": "Dependencies",
+  "subCategory": "Library Selection",
+  "context": {
+    "scope": "Date Handling",
+    "applicableFiles": [
+      "package.json",
+      "*.tsx",
+      "*.ts"
+    ],
+    "triggers": [
+      "date-fns usage",
+      "date handling imports"
+    ]
+  },
+  "pattern": {
+    "description": "Prefer built-in framework functions over external libraries when available",
+    "codePatterns": [
+      "import.*from 'date-fns'",
+      "\"date-fns\": \"[0-9]"
+    ],
+    "conditions": {
+      "hasBuiltInAlternative": true,
+      "frameworkProvidesFunctionality": true
+    }
+  },
+  "recommendation": {
+    "action": "replace",
+    "description": "Use next-intl's built-in date handling functions instead of date-fns",
+    "codeExamples": {
+      "before": "import { format } from 'date-fns'",
+      "after": "import { useFormatter } from 'next-intl'"
+    }
+  },
+  "relatedRules": [
+    {
+      "ruleId": "DEP-001",
+      "relationship": "complementary",
+      "description": "Library selection affects version management strategy",
+      "relevance": "Choice of libraries impacts version management decisions"
+    },
+    {
+      "ruleId": "NEXT-001",
+      "relationship": "dependent",
+      "description": "Framework features influence library choices",
+      "relevance": "Prefer framework-provided solutions over external libraries"
+    }
+  ],
+  "severity": "medium",
+  "metadata": {
+    "created": "2024-03-27",
+    "lastModified": "2024-03-27",
+    "implementationStatus": "active"
+  },
+  "rationale": "Using framework-provided functionality reduces bundle size and ensures consistent behavior across the application."
+}
