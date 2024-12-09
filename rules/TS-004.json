@@ -1,0 +1,48 @@
+{
+  "ruleId": "TS-004",
+  "version": "1.0",
+  "category": "TypeScript",
+  "subCategory": "Type Definitions",
+  "context": {
+    "scope": "Type vs Interface Usage",
+    "applicableFiles": ["*.ts", "*.tsx"],
+    "triggers": ["type definitions", "interface definitions"]
+  },
+  "pattern": {
+    "description": "Use 'type' for type definitions unless you specifically need interface features",
+    "codePatterns": ["interface", "type"],
+    "conditions": {
+      "isTypeDefinition": true,
+      "noInterfaceFeatures": true
+    }
+  },
+  "recommendation": {
+    "action": "modify",
+    "description": "Use type aliases by default, only use interfaces when you need interface-specific features like declaration merging",
+    "codeExamples": {
+      "before": "interface UserProps { name: string }",
+      "after": "type UserProps = { name: string }",
+      "interfaceNeeded": {
+        "example": "interface Window { customProp: string }",
+        "explanation": "Interface needed here for declaration merging"
+      }
+    },
+    "principles": [
+      "Use type for better consistency",
+      "Use type for unions and intersections",
+      "Use type for mapped types",
+      "Only use interface when declaration merging is needed",
+      "Only use interface for OOP style class implementations"
+    ]
+  },
+  "relatedRules": [
+    {
+      "ruleId": "TS-002",
+      "relationship": "complementary",
+      "description": "Type definitions structure",
+      "relevance": "Both rules guide proper type definition patterns"
+    }
+  ],
+  "severity": "medium",
+  "rationale": "Types are more flexible than interfaces, support more features like unions and mapped types, and provide better error messages. Interfaces should only be used when their specific features like declaration merging are needed."
+}
